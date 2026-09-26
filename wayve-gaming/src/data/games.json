@@ -1,0 +1,212 @@
+{
+  "games": [
+    {
+      "slug": "shadow-protocol",
+      "title": "Shadow Protocol",
+      "genre": "Action RPG",
+      "tags": ["Action", "RPG", "Multiplayer"],
+      "image": "https://picsum.photos/id/1/1200/700",
+      "description": "A tactical multiplayer action RPG built around squad strategy, high-stakes missions, and a living world.",
+      "screenshots": [
+        "https://picsum.photos/id/10/900/560",
+        "https://picsum.photos/id/11/900/560",
+        "https://picsum.photos/id/12/900/560",
+        "https://picsum.photos/id/25/900/560",
+        "https://picsum.photos/id/26/900/560"
+      ],
+      "features": [
+        {
+          "title": "Intense Combat",
+          "description": "Fast, tactical gunplay with destructible cover and reactive enemy AI that adapts to your squad."
+        },
+        {
+          "title": "Live Seasons",
+          "description": "New maps, modes, and rewards every season — free for all players, forever."
+        },
+        {
+          "title": "Cross-Platform",
+          "description": "Play with friends across PC, console, and cloud with a single shared account."
+        },
+        {
+          "title": "Squad Strategy",
+          "description": "Command a squad of specialists, each with unique abilities and upgrade paths."
+        }
+      ],
+      "requirements": {
+        "platform": "PC, Console",
+        "players": "1-4 players",
+        "release": "Coming soon",
+        "minimum": {
+          "os": "Windows 10 (64-Bit)",
+          "processor": "Intel Core i5-6600K / AMD FX 5820",
+          "memory": "8 GB RAM",
+          "graphics": "NVIDIA GTX 1060 / AMD RX 5820",
+          "storage": "50 GB Available Space"
+        },
+        "recommended": {
+          "os": "Windows 11 (64-Bit)",
+          "processor": "Intel Core i7-9700K / AMD Ryzen 7 3700X",
+          "memory": "16 GB RAM",
+          "graphics": "NVIDIA RTX 2060 / AMD RX 5700 XT",
+          "storage": "50 GB SSD"
+        }
+      }
+    },
+    {
+      "slug": "midnight-shift",
+      "title": "Midnight Shift",
+      "genre": "Psychological Horror",
+      "tags": ["Horror", "Adventure", "Story"],
+      "image": "https://picsum.photos/id/13/1200/700",
+      "description": "Uncover the truth behind a strange night shift where every identity may be hiding a darker story.",
+      "screenshots": [
+        "https://picsum.photos/id/14/900/560",
+        "https://picsum.photos/id/15/900/560",
+        "https://picsum.photos/id/16/900/560",
+        "https://picsum.photos/id/27/900/560",
+        "https://picsum.photos/id/28/900/560"
+      ],
+      "features": [
+        {
+          "title": "Branching Investigations",
+          "description": "Every choice rewrites the case file. Multiple endings driven by what you discover."
+        },
+        {
+          "title": "Atmospheric Worlds",
+          "description": "Hand-crafted environments with dynamic lighting, sound design, and weather."
+        },
+        {
+          "title": "Replayable Paths",
+          "description": "New Game+ uncovers hidden dialogue, alternate scenes, and secret endings."
+        },
+        {
+          "title": "Original Score",
+          "description": "An adaptive soundtrack that reacts to tension, danger, and your decisions."
+        }
+      ],
+      "requirements": {
+        "platform": "PC, Mobile",
+        "players": "Single player",
+        "release": "Available soon",
+        "minimum": {
+          "os": "Windows 10 (64-Bit)",
+          "processor": "Intel Core i3-8100 / AMD Ryzen 3 2200G",
+          "memory": "8 GB RAM",
+          "graphics": "NVIDIA GTX 960 / AMD RX 560",
+          "storage": "25 GB Available Space"
+        },
+        "recommended": {
+          "os": "Windows 11 (64-Bit)",
+          "processor": "Intel Core i5-10400 / AMD Ryzen 5 3600",
+          "memory": "16 GB RAM",
+          "graphics": "NVIDIA GTX 1660 / AMD RX 5600 XT",
+          "storage": "25 GB SSD"
+        }
+      }
+    },
+    {
+      "slug": "grand-mafia",
+      "title": "Grand Mafia",
+      "genre": "Strategy",
+      "tags": ["Strategy", "Simulation", "Multiplayer"],
+      "image": "https://picsum.photos/id/17/1200/700",
+      "description": "Build an empire, manage alliances, and outsmart rival crews in a city that never sleeps.",
+      "screenshots": [
+        "https://picsum.photos/id/18/900/560",
+        "https://picsum.photos/id/19/900/560",
+        "https://picsum.photos/id/20/900/560",
+        "https://picsum.photos/id/29/900/560",
+        "https://picsum.photos/id/30/900/560"
+      ],
+      "features": [
+        {
+          "title": "Territory Control",
+          "description": "Claim districts, defend them from rival crews, and expand your influence across the map."
+        },
+        {
+          "title": "Alliance Events",
+          "description": "Weekly alliance wars, co-op raids, and seasonal leaderboards with real rewards."
+        },
+        {
+          "title": "Living Economy",
+          "description": "A persistent player-driven market where prices react to supply and demand."
+        },
+        {
+          "title": "Crew Customization",
+          "description": "Recruit, train, and equip a crew of specialists with unique skills and perks."
+        }
+      ],
+      "requirements": {
+        "platform": "Mobile",
+        "players": "Massively multiplayer",
+        "release": "Live",
+        "minimum": {
+          "os": "Android 8.0 / iOS 13",
+          "processor": "Snapdragon 660 / Apple A10",
+          "memory": "3 GB RAM",
+          "graphics": "Adreno 512 / Apple GPU (A10)",
+          "storage": "2 GB Available Space"
+        },
+        "recommended": {
+          "os": "Android 12 / iOS 16",
+          "processor": "Snapdragon 888 / Apple A15",
+          "memory": "6 GB RAM",
+          "graphics": "Adreno 660 / Apple GPU (A15)",
+          "storage": "4 GB Available Space"
+        }
+      }
+    },
+    {
+      "slug": "neon-arena",
+      "title": "Neon Arena",
+      "genre": "Competitive Shooter",
+      "tags": ["Shooter", "Competitive", "Esports"],
+      "image": "https://picsum.photos/id/21/1200/700",
+      "description": "Fast rounds, expressive movement, and team tactics collide in a bright competitive arena.",
+      "screenshots": [
+        "https://picsum.photos/id/22/900/560",
+        "https://picsum.photos/id/23/900/560",
+        "https://picsum.photos/id/24/900/560",
+        "https://picsum.photos/id/31/900/560",
+        "https://picsum.photos/id/32/900/560"
+      ],
+      "features": [
+        {
+          "title": "Ranked Competition",
+          "description": "Skill-based matchmaking with seasonal ranks, placement matches, and decay."
+        },
+        {
+          "title": "Custom Loadouts",
+          "description": "Deep weapon customization with attachments, skins, and per-class tuning."
+        },
+        {
+          "title": "Tournament Ready",
+          "description": "Built-in bracket tools, spectator mode, and broadcast overlays for esports."
+        },
+        {
+          "title": "Fast Rounds",
+          "description": "5v5 matches designed for 15-minute sessions with instant rematch queues."
+        }
+      ],
+      "requirements": {
+        "platform": "PC, Console",
+        "players": "5v5 multiplayer",
+        "release": "In development",
+        "minimum": {
+          "os": "Windows 10 (64-Bit)",
+          "processor": "Intel Core i5-8400 / AMD Ryzen 5 2600",
+          "memory": "8 GB RAM",
+          "graphics": "NVIDIA GTX 1050 Ti / AMD RX 570",
+          "storage": "30 GB Available Space"
+        },
+        "recommended": {
+          "os": "Windows 11 (64-Bit)",
+          "processor": "Intel Core i7-10700K / AMD Ryzen 7 3800X",
+          "memory": "16 GB RAM",
+          "graphics": "NVIDIA RTX 3060 / AMD RX 6600 XT",
+          "storage": "30 GB SSD"
+        }
+      }
+    }
+  ]
+}

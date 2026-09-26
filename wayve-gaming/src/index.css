@@ -1,0 +1,564 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Nico Moji';
+  src: url('/fontNicoMoji/nicomoji-regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* ---------- Text & Backgrounds ---------- */
+  .gradient-text {
+    background: linear-gradient(135deg, #FF5700 0%, #E64E00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-bg {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  }
+
+  /* ---------- Cards ---------- */
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .stats-card {
+    border: 2px solid #FF5700;
+  }
+
+  .stat-icon-bg {
+    background: rgba(255, 87, 0, 0.1);
+  }
+
+  /* ---------- Navigation ---------- */
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #FF5700;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    width: 100%;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn-primary {
+    background: #FF7E00;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: #E66F00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 126, 0, 0.3);
+  }
+
+  .btn-outline {
+    border: 2px solid #FF5700;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline:hover {
+    background: #FF5700;
+    color: white;
+  }
+
+  .theme-toggle {
+    background: #1f2937;
+    border: 2px solid #FF5700;
+  }
+
+  /* ---------- Section headings ---------- */
+  .section-title-line {
+    flex: 1;
+    height: 2px;
+    background: #FF5700;
+    margin-left: 1.5rem;
+    max-width: 1000px;
+  }
+
+  .stat-underline {
+    width: 30px;
+    height: 3px;
+    background: #FF5700;
+  }
+
+  /* ---------- Avatars / Team ---------- */
+  .avatar-ring {
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .team-card {
+    border: 3px solid #FF5700;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .team-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+    padding: 1.5rem;
+  }
+
+  /* ---------- Jobs ---------- */
+  .job-card {
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+  }
+
+  .job-card:hover {
+    border-color: #FF5700;
+    background: rgba(255, 87, 0, 0.02);
+  }
+
+  .job-card-arrow {
+    background: #1f2937;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- Forms ---------- */
+  .contact-form input,
+  .contact-form textarea {
+    border: 1px solid #e5e7eb;
+    transition: border-color 0.3s ease;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: #FF5700;
+    outline: none;
+  }
+
+  /* ---------- Hero animations ---------- */
+  .hero-content {
+    animation: fadeInUp 1s ease both;
+  }
+
+  .hero-content-delayed {
+    animation: fadeInUp 1s ease 0.3s both;
+  }
+
+  /* ---------- Studio typography ---------- */
+  .studio-text-white {
+    font-family: 'Nico Moji', sans-serif;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+  }
+
+  .studio-text-orange {
+    font-family: 'Nico Moji', sans-serif;
+    font-weight: 700;
+    color: #FF5700;
+    letter-spacing: 2px;
+  }
+
+  .hiring-text {
+    font-family: 'Nico Moji', sans-serif;
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+/* ============================================================
+   SHUTTER STACK — 3 sticky panels
+   ============================================================ */
+.stack-container {
+  position: relative;
+}
+
+.panel {
+  position: sticky;
+  top: var(--nav-h, 76px);
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #05050a;
+  box-shadow: 0 -50px 80px -30px rgba(0, 0, 0, .95);
+  isolation: isolate;
+}
+
+.panel__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #0a0a0f;
+  overflow: hidden;
+  filter: blur(var(--blur, 0px));
+  transition: filter .15s linear;
+}
+
+.panel__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.panel__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 20%, transparent 25%, rgba(0,0,0,.5) 100%),
+    linear-gradient(to bottom,
+      rgba(0,0,0,.35) 0%,
+      rgba(0,0,0,.05) 40%,
+      rgba(0,0,0,.6) 100%);
+  pointer-events: none;
+}
+
+.panel-video .panel__bg::after {
+  background:
+    radial-gradient(120% 90% at 50% 50%, transparent 30%, rgba(0,0,0,.4) 100%),
+    linear-gradient(to bottom,
+      rgba(5,5,10,.35) 0%,
+      rgba(5,5,10,.05) 50%,
+      rgba(5,5,10,.55) 100%);
+}
+
+.panel__dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #05050a;
+  opacity: var(--dim, 0);
+  pointer-events: none;
+  transition: opacity .15s linear;
+}
+
+/* ---------- Panel 3 — Hero background image ---------- */
+.panel-3 .panel__bg {
+  background-image: url('/heroimage/gameslider3.png');
+  background-position: center right;
+}
+
+.panel-3 .panel__bg::after {
+  background: linear-gradient(
+    to right,
+    rgba(5, 5, 10, .97) 15%,
+    rgba(5, 5, 10, .4) 55%,
+    rgba(5, 5, 10, .2) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: min(90%, 1400px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.hero-text {
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.hero-text .eyebrow {
+  display: block;
+  color: #FF5700;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  margin-bottom: 18px;
+}
+
+.hero-text h1 {
+  color: #fff;
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.hero-text h1 .highlight { color: #FF5700; }
+
+.hero-text p {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 550px;
+}
+
+.buttons { display: flex; flex-wrap: wrap; gap: 16px; }
+
+.btn-primary,
+.btn-secondary {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 16px 32px;
+  transition: background .3s ease, transform .2s ease;
+}
+
+.btn-primary {
+  background: #FF7E00;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #E66F00;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #05050a;
+}
+
+.btn-secondary:hover {
+  background: #e4e4e7;
+  transform: translateY(-2px);
+}
+
+.hero-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  color: #e4e4e7;
+  font-size: .88rem;
+  font-weight: 500;
+  transition: background .3s ease;
+}
+
+.sidebar-item:hover { background: rgba(255, 255, 255, .06); }
+
+.sidebar-item i {
+  width: 18px;
+  color: #FF5700;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* ---------- Staged reveal steps ---------- */
+.reveal-step {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity .55s cubic-bezier(.22, 1, .36, 1),
+    transform .55s cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.reveal-step.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ---------- Scroll-down button (mouse + arrow) ---------- */
+.scroll-btn {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: 38px;
+  height: 58px;
+  border-radius: 999px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .55);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding-top: 14px;
+  transition: opacity .4s ease, transform .4s ease, border-color .3s ease;
+  animation: mouseBob 2.2s ease-in-out infinite;
+}
+
+.scroll-btn:hover { border-color: #FF5700; }
+
+.scroll-btn::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border-radius: 3px;
+  background: #FF5700;
+  animation: dotDrop 1.8s ease-in-out infinite;
+}
+
+ .scroll-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -21px;
+    left: 46%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(255, 255, 255, .7);
+    border-bottom: 2px solid rgba(255, 255, 255, .7);
+    rotate: 45deg;
+    transition: border-color .3s ease;
+  }
+
+.scroll-btn:hover::after { border-color: #FF5700; }
+
+.scroll-btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(24px);
+}
+
+@keyframes mouseBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(6px); }
+}
+
+@keyframes dotDrop {
+  0%   { opacity: 0; transform: translateY(0); }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-step { transition: opacity .25s linear; transform: none; }
+  .scroll-btn,
+  .scroll-btn::before { animation: none; }
+  .panel__bg,
+  .panel__dim { transition: none; }
+}
+
+@media (max-width: 1024px) {
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .hero-sidebar {
+    width: 100%;
+    max-width: 460px;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebar-item { flex: 1 1 45%; }
+}
+
+@media (max-width: 640px) {
+  .hero-text h1 { font-size: 2rem; }
+  .hero-sidebar { flex-direction: column; }
+  .sidebar-item { flex: 1 1 100%; }
+  .buttons { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+}

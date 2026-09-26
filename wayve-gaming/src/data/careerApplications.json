@@ -1,0 +1,35 @@
+{
+  "form": {
+    "userName": "shahrukh",
+    "email": "admin@waywe.com",
+    "role": "Game Developer",
+    "location": "isl",
+    "experience": "3-5 years",
+    "portfolio": "http://localhost:5173/careers",
+    "message": "sad"
+  },
+  "applications": [
+    {
+      "id": "application-1790340963652",
+      "submittedAt": "2026-09-25T12:56:03.652Z",
+      "role": "Game Developer",
+      "userName": "shahrukh",
+      "email": "admin@waywe.com",
+      "location": "isl",
+      "experience": "6+ years",
+      "portfolio": "http://localhost:5173/careers",
+      "message": "sd"
+    },
+    {
+      "id": "application-1790340996075",
+      "submittedAt": "2026-09-25T12:56:36.075Z",
+      "role": "Game Developer",
+      "userName": "shahrukh",
+      "email": "admin@waywe.com",
+      "location": "isl",
+      "experience": "3-5 years",
+      "portfolio": "http://localhost:5173/careers",
+      "message": "sad"
+    }
+  ]
+}

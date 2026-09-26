@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Waywe Gaming — Shutter with Staged Content Reveal</title>
+<style>
+  :root {
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --orange: #f97316;
+    --orange-dark: #ea580c;
+    --dark: #05050a;
+    --dark-2: #0d0d14;
+    --dark-3: #131320;
+    --text-muted: #9ca3af;
+    --border: rgba(255,255,255,.08);
+    --nav-h: 76px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--dark);
+    color: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  /* ============================================================
+     NAVBAR
+     ============================================================ */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 60px);
+    background: rgba(5, 5, 10, .85);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; line-height: 1; }
+  .logo__mark { width: 42px; height: 42px; flex-shrink: 0; }
+  .logo__text { display: flex; flex-direction: column; }
+  .logo__text .main { color: #fff; font-size: 1.3rem; font-weight: 900; letter-spacing: .02em; }
+  .logo__text .sub {
+    color: var(--orange); font-size: .62rem; font-weight: 800;
+    letter-spacing: .28em; margin-top: 3px; text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: clamp(18px, 2.6vw, 42px);
+    list-style: none; margin: 0; padding: 0;
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .nav-links a {
+    font-size: .95rem; font-weight: 500; color: #cbd5e1;
+    transition: color .25s ease; position: relative; padding: 6px 0;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.is-active { color: var(--orange); }
+  .nav-links a.is-active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+    height: 2px; background: var(--orange); border-radius: 2px;
+  }
+
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+  .btn-outline {
+    padding: 11px 24px; border-radius: 10px;
+    border: 1.5px solid var(--orange); background: transparent;
+    color: var(--orange); font-weight: 600; font-size: .9rem;
+    cursor: pointer; transition: background .25s ease, color .25s ease;
+    white-space: nowrap;
+  }
+  .btn-outline:hover { background: var(--orange); color: #fff; }
+
+  .theme-toggle {
+    width: 46px; height: 42px; border-radius: 10px;
+    border: 1.5px solid var(--orange); background: transparent;
+    color: var(--orange); display: grid; place-items: center;
+    cursor: pointer; transition: background .25s ease;
+  }
+  .theme-toggle:hover { background: rgba(249, 115, 22, .12); }
+  .theme-toggle svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .menu-btn {
+    display: none; background: transparent;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    color: #fff; width: 42px; height: 42px;
+    cursor: pointer; align-items: center; justify-content: center;
+  }
+  .menu-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  @media (max-width: 1080px) {
+    .nav-links { display: none; }
+    .nav-actions .btn-outline { display: none; }
+    .menu-btn { display: flex; }
+  }
+
+  /* ============================================================
+     SHUTTER STACK
+     ============================================================ */
+  .stack-container {
+    position: relative;
+    margin-top: var(--nav-h);
+  }
+
+  .panel {
+    position: sticky;
+    top: var(--nav-h);
+    height: calc(100vh - var(--nav-h));
+    height: calc(100svh - var(--nav-h));
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--dark);
+    box-shadow: 0 -50px 80px -30px rgba(0, 0, 0, .95);
+    isolation: isolate;
+  }
+
+  .panel__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0a0a0f;
+    overflow: hidden;
+    filter: blur(var(--blur, 0px));
+    transition: filter .15s linear;
+  }
+
+  .panel__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+  }
+
+  .panel__bg::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 90% at 50% 20%, transparent 25%, rgba(0,0,0,.5) 100%),
+      linear-gradient(to bottom,
+        rgba(0,0,0,.35) 0%, rgba(0,0,0,.05) 40%, rgba(0,0,0,.6) 100%);
+    pointer-events: none;
+  }
+
+  .panel-video .panel__bg::after {
+    background:
+      radial-gradient(120% 90% at 50% 50%, transparent 30%, rgba(0,0,0,.4) 100%),
+      linear-gradient(to bottom,
+        rgba(5,5,10,.35) 0%, rgba(5,5,10,.05) 50%, rgba(5,5,10,.55) 100%);
+  }
+
+  .panel__dim {
+    position: absolute; inset: 0; z-index: 1;
+    background: #05050a;
+    opacity: var(--dim, 0);
+    pointer-events: none;
+    transition: opacity .15s linear;
+  }
+
+  /* ============================================================
+     PANEL 3 — HERO CONTENT + IMAGE, staged reveal
+     ============================================================ */
+  .panel-3 .panel__bg {
+    background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80');
+    background-position: center right;
+  }
+  .panel-3 .panel__bg::after {
+    background: linear-gradient(
+      to right,
+      rgba(5, 5, 10, .97) 15%,
+      rgba(5, 5, 10, .4) 55%,
+      rgba(5, 5, 10, .2) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    display: flex; justify-content: space-between; align-items: center;
+    width: 90%; max-width: 1400px; gap: 60px;
+  }
+
+  .hero-text {
+    max-width: 650px;
+    display: flex; flex-direction: column; gap: 28px;
+  }
+
+  .hero-text .eyebrow {
+    display: block; color: var(--orange); font-weight: 600;
+    font-size: .85rem; letter-spacing: .1em; margin-bottom: 18px;
+  }
+
+  .hero-text h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 700; line-height: 1.1; margin: 0; color: #fff;
+  }
+  .hero-text h1 .highlight { color: var(--orange); }
+
+  .hero-text p {
+    font-size: 1rem; color: var(--text-muted);
+    line-height: 1.65; margin: 0; max-width: 550px;
+  }
+
+  .reveal-step {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity .55s var(--ease), transform .55s var(--ease);
+    pointer-events: none;
+    will-change: opacity, transform;
+  }
+  .reveal-step.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    padding: 16px 32px; border-radius: 8px;
+    font-weight: 600; font-size: 1rem;
+    border: none; cursor: pointer;
+    transition: background .3s ease, transform .2s ease;
+  }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: #fff; color: var(--dark);
+    padding: 16px 32px; border-radius: 8px;
+    font-weight: 600; font-size: 1rem;
+    border: none; cursor: pointer;
+    transition: background .3s ease, transform .2s ease;
+  }
+  .btn-secondary:hover { background: #e4e4e7; transform: translateY(-2px); }
+
+  .hero-sidebar {
+    width: 300px; padding: 22px; border-radius: 14px;
+    background: rgba(255, 255, 255, .04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-item {
+    display: flex; align-items: center; gap: 14px;
+    color: #e4e4e7; font-size: .88rem; font-weight: 500;
+    padding: 12px; border-radius: 8px;
+    transition: background .3s ease; cursor: pointer;
+  }
+  .sidebar-item:hover { background: rgba(255, 255, 255, .06); }
+
+  .sidebar-item svg {
+    width: 18px; height: 18px;
+    stroke: var(--orange); fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     SCROLL-DOWN BUTTON — bouncing mouse + arrow (CodePen style)
+     ============================================================ */
+  .scroll-btn {
+      position: fixed;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 60;
+        width: 38px;
+        height: 58px;
+        border-radius: 999px;
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, .55);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        padding-top: 14px;
+        transition: opacity .4s ease, transform .4s ease, border-color .3s ease;
+        animation: mouseBob 2.2s ease-in-out infinite;
+    }
+
+  .scroll-btn:hover {
+    border-color: var(--orange);
+  }
+
+  /* the little dot inside the mouse */
+  .scroll-btn::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 9px;
+    border-radius: 3px;
+    background: var(--orange);
+    animation: dotDrop 1.8s ease-in-out infinite;
+  }
+
+  /* the chevron below the mouse */
+  .scroll-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -21px;
+    left: 46%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(255, 255, 255, .7);
+    border-bottom: 2px solid rgba(255, 255, 255, .7);
+    rotate: 45deg;
+    transition: border-color .3s ease;
+  }
+
+  .scroll-btn:hover::after {
+    border-color: var(--orange);
+  }
+
+  /* hide state */
+  .scroll-btn.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(24px);
+  }
+
+  @keyframes mouseBob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+
+  @keyframes dotDrop {
+    0%   { opacity: 0; transform: translateY(0); }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(16px); }
+  }
+
+  /* ============================================================
+     AFTER-SHUTTER CONTENT
+     ============================================================ */
+  .site-content {
+    position: relative; z-index: 5;
+    background: var(--dark);
+  }
+
+  .section {
+    padding: clamp(60px, 8vw, 110px) clamp(20px, 5vw, 80px);
+    max-width: 1400px; margin: 0 auto;
+  }
+
+  .section-label {
+    display: flex; align-items: center; gap: 20px;
+    font-size: .8rem; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: #cbd5e1; margin-bottom: 28px;
+  }
+  .section-label::after {
+    content: ''; flex: 0 0 280px; height: 1px;
+    background: rgba(255,255,255,.15);
+  }
+
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 48px; flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.05;
+    margin: 0; color: #fff;
+  }
+  .section-title .accent { color: var(--orange); }
+  .section-title .outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,.55);
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .game-card {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    transition: transform .35s var(--ease), border-color .35s ease, box-shadow .35s ease;
+    display: flex; flex-direction: column;
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(249, 115, 22, .5);
+    box-shadow: 0 24px 50px -20px rgba(249, 115, 22, .35);
+  }
+
+  .game-card__img {
+    height: 150px; background-size: cover; background-position: center;
+    background-color: var(--dark-3); position: relative;
+  }
+  .game-card__img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--dark-2) 0%, transparent 60%);
+  }
+
+  .game-card__body {
+    padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: 1;
+  }
+
+  .game-card__title { font-size: 1.1rem; font-weight: 700; margin: 0; color: #fff; }
+
+  .game-card__tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    font-size: .7rem; color: var(--text-muted); letter-spacing: .04em;
+  }
+  .game-card__tags span {
+    padding: 3px 9px; border: 1px solid var(--border); border-radius: 20px;
+  }
+
+  .game-card__cta {
+    margin-top: auto; display: inline-flex; align-items: center;
+    gap: 8px; padding: 10px 18px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: transparent; color: #e4e4e7;
+    font-size: .82rem; font-weight: 600; cursor: pointer;
+    align-self: flex-start;
+    transition: background .3s ease, border-color .3s ease, color .3s ease;
+  }
+  .game-card__cta:hover {
+    background: var(--orange); border-color: var(--orange); color: #fff;
+  }
+  .game-card__cta svg {
+    width: 14px; height: 14px; stroke: currentColor; fill: none;
+    stroke-width: 2; transition: transform .3s ease;
+  }
+  .game-card__cta:hover svg { transform: translateX(4px); }
+
+  .story-text {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.75; color: var(--text-muted);
+    max-width: 880px; margin: 0 0 40px;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 1024px) {
+    .hero-content {
+      flex-direction: column; align-items: flex-start; gap: 40px;
+    }
+    .hero-sidebar {
+      width: 100%; max-width: 460px;
+      flex-direction: row; flex-wrap: wrap;
+    }
+    .sidebar-item { flex: 1 1 45%; }
+  }
+
+  @media (max-width: 640px) {
+    .hero-text h1 { font-size: 2rem; }
+    .hero-sidebar { flex-direction: column; }
+    .sidebar-item { flex: 1 1 100%; }
+    .buttons { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+    .section-label::after { flex: 0 0 100px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal-step { transition: opacity .25s linear; transform: none; }
+    .btn-primary, .btn-secondary, .game-card { transition: none; }
+    .scroll-btn { animation: none; }
+    .scroll-btn::before { animation: none; }
+    .panel__bg, .panel__dim { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <a href="#" class="logo">
+    <svg class="logo__mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fb923c"/>
+          <stop offset="1" stop-color="#ea580c"/>
+        </linearGradient>
+      </defs>
+      <path d="M32 3 L58 12 V30 C58 46 46 57 32 61 C18 57 6 46 6 30 V12 Z"
+            fill="none" stroke="url(#lg)" stroke-width="4"/>
+      <path d="M22 22 H42 L26 34 H42 L24 48"
+            fill="none" stroke="url(#lg)" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="logo__text">
+      <span class="main">WAYWE</span>
+      <span class="sub">Gaming</span>
+    </span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#" class="is-active">Home</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Games</a></li>
+    <li><a href="#">Blogs</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="btn-outline">Contact Us</button>
+    <button class="theme-toggle" aria-label="Toggle theme">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="menu-btn" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ================= SCROLL-DOWN BUTTON ================= -->
+<button class="scroll-btn" aria-label="Scroll down"></button>
+
+<!-- ================= SHUTTER STACK ================= -->
+<main class="stack-container">
+
+  <!-- PANEL 1 — VIDEO ONLY -->
+  <section class="panel panel-video panel-1">
+    <div class="panel__bg">
+      <video
+        class="panel__video"
+        autoplay muted loop playsinline preload="auto"
+        poster="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80">
+        <source src="./assets/videos/Midnight Shift Doppelganger Game _ Gameplay Trailer Video 01 _ Landscape _ Google Play Store.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="panel__dim"></div>
+  </section>
+
+  <!-- PANEL 2 — VIDEO ONLY -->
+  <section class="panel panel-video panel-2">
+    <div class="panel__bg">
+      <video
+        class="panel__video"
+        autoplay muted loop playsinline preload="auto"
+        poster="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80">
+        <source src="./assets/videos/Grand Mafia Gangster City Game _ Trailer Video 01 _ Google Play Store.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="panel__dim"></div>
+  </section>
+
+  <!-- PANEL 3 — HERO CONTENT + IMAGE (revealed as panel slides in) -->
+  <section class="panel panel-3">
+    <div class="panel__bg"></div>
+    <div class="panel__dim"></div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+
+        <div class="reveal-step" data-step="0">
+          <span class="eyebrow">— PREMIUM CARE FOR EVERY FIBER</span>
+          <h1>Enterprise IT Solutions For <span class="highlight">Modern Businesses</span></h1>
+        </div>
+
+        <div class="reveal-step" data-step="1">
+          <p>Empowering Organizations With Secure Cloud Infrastructure, AI-Driven Innovation, Cybersecurity, And Custom Software Development.</p>
+        </div>
+
+        <div class="reveal-step" data-step="2">
+          <div class="buttons">
+            <button class="btn-primary">Get Consultation</button>
+            <button class="btn-secondary">Contact Us</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hero-sidebar reveal-step" data-step="3">
+        <div class="sidebar-item">
+          <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span>Game Solutions</span>
+        </div>
+        <div class="sidebar-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>AI &amp; Game Development</span>
+        </div>
+        <div class="sidebar-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span>Multiplayer Gaming</span>
+        </div>
+        <div class="sidebar-item">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>Live Game Operations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= AFTER-SHUTTER CONTENT ================= -->
+<div class="site-content">
+
+  <!-- FEATURED GAMES -->
+  <section class="section" id="games">
+    <div class="section-label">OUR GAMES</div>
+
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="accent">Featured</span> <span class="outline">Games</span>
+      </h2>
+      <button class="btn-primary">View Games</button>
+    </div>
+
+    <div class="games-grid">
+      <article class="game-card">
+        <div class="game-card__img" style="background-image:url('https://picsum.photos/id/1/600/400')"></div>
+        <div class="game-card__body">
+          <h3 class="game-card__title">Shadow Protocol</h3>
+          <div class="game-card__tags"><span>Action</span><span>RPG</span><span>Multiplayer</span></div>
+          <button class="game-card__cta">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-card__img" style="background-image:url('https://picsum.photos/id/2/600/400')"></div>
+        <div class="game-card__body">
+          <h3 class="game-card__title">Shadow Protocol</h3>
+          <div class="game-card__tags"><span>Action</span><span>RPG</span><span>Multiplayer</span></div>
+          <button class="game-card__cta">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-card__img" style="background-image:url('https://picsum.photos/id/3/600/400')"></div>
+        <div class="game-card__body">
+          <h3 class="game-card__title">Shadow Protocol</h3>
+          <div class="game-card__tags"><span>Action</span><span>RPG</span><span>Multiplayer</span></div>
+          <button class="game-card__cta">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-card__img" style="background-image:url('https://picsum.photos/id/4/600/400')"></div>
+        <div class="game-card__body">
+          <h3 class="game-card__title">Shadow Protocol</h3>
+          <div class="game-card__tags"><span>Action</span><span>RPG</span><span>Multiplayer</span></div>
+          <button class="game-card__cta">View Details <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section class="section" id="story">
+    <div class="section-label">OUR STORY / OUR MISSION</div>
+
+    <h2 class="section-title" style="margin-bottom:32px; font-size:clamp(2.2rem, 5vw, 3.8rem);">
+      From <span class="accent">concept</span> to live apps,<br>
+      one studio.
+    </h2>
+
+    <p class="story-text">
+      We're a passionate team of game developers, designers, and storytellers on a mission to craft
+      unforgettable gaming experiences. From concept to launch, every pixel and mechanic is built
+      with heart, precision, and play in mind. We're a passionate team of game developers, designers,
+      and storytellers on a mission to craft unforgettable gaming experiences. From concept to
+      launch, every pixel and mechanic is built with heart, precision, and play in mind.
+    </p>
+
+    <button class="btn-primary">Learn More About Us</button>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  const navH = 76;
+
+  const panels      = Array.from(document.querySelectorAll('.panel'));
+  const videos      = Array.from(document.querySelectorAll('.panel__video'));
+  const scrollBtn   = document.querySelector('.scroll-btn');
+  const stack       = document.querySelector('.stack-container');
+  const siteContent = document.querySelector('.site-content');
+  const revealSteps = Array.from(document.querySelectorAll('.panel-3 .reveal-step'));
+
+  /* ---------- keep background videos playing ---------- */
+  videos.forEach((v) => {
+    v.muted = true;
+    v.playsInline = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    document.addEventListener('click', tryPlay, { once: true });
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+  });
+
+  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+  /* ---------- helpers ---------- */
+  function docTop(el) {
+    let y = 0;
+    while (el) { y += el.offsetTop; el = el.offsetParent; }
+    return y;
+  }
+
+  function panelScrollY(index) {
+    return Math.max(0, docTop(panels[index]) - navH);
+  }
+
+  /* ---------- Waypoints the scroll-down button cycles through ---------- */
+  const waypoints = [
+    panelScrollY(0),                  // panel 1
+    panelScrollY(1),                  // panel 2
+    panelScrollY(2),                  // panel 3 (fully revealed)
+    docTop(siteContent) - navH        // after the stack
+  ];
+
+  /* Scroll position where the stack ends (site-content top) */
+  const stackEndY = docTop(siteContent) - navH;
+
+  /* ============================================================
+     UPDATE — runs on every scroll tick
+     ============================================================ */
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const vh = window.innerHeight;
+    const panelH = vh - navH;
+
+    /* ---------- 1. Progressive dim + blur on covered panels ---------- */
+    for (let i = 0; i < panels.length - 1; i++) {
+      const panel = panels[i];
+      const next  = panels[i + 1];
+      const nextRect = next.getBoundingClientRect();
+
+      const coverage = clamp(1 - (nextRect.top - navH) / panelH, 0, 1);
+
+      panel.style.setProperty('--dim',  (coverage * 0.9).toFixed(3));
+      panel.style.setProperty('--blur', (coverage * 8).toFixed(2) + 'px');
+    }
+
+    /* ---------- 2. Panel 3 staged content reveal ---------- */
+    const panel3    = panels[panels.length - 1];
+    const rect3     = panel3.getBoundingClientRect();
+    const coverage3 = clamp(1 - (rect3.top - navH) / panelH, 0, 1);
+
+    const thresholds = [0.15, 0.40, 0.65, 0.88];
+    revealSteps.forEach((el, i) => {
+      el.classList.toggle('is-revealed', coverage3 >= (thresholds[i] ?? 0.9));
+    });
+
+    /* ---------- 3. Scroll button visibility ----------
+       Hide the button as soon as the user passes the end of the
+       slider stack (i.e. reaches the Featured Games section).
+       Show it again if they scroll back up into the stack. */
+    const pastStack = window.scrollY >= stackEndY - 4;
+    scrollBtn.classList.toggle('is-hidden', pastStack);
+
+    /* ---------- 4. Pause off-screen videos ---------- */
+    videos.forEach((v) => {
+      const r = v.closest('.panel').getBoundingClientRect();
+      const onScreen = r.bottom > 0 && r.top < vh;
+      if (onScreen && v.paused) v.play().catch(() => {});
+      if (!onScreen && !v.paused) v.pause();
+    });
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+
+  /* ============================================================
+     SCROLL-DOWN BUTTON — jump to next waypoint (only within stack)
+     ============================================================ */
+  scrollBtn.addEventListener('click', () => {
+    const y = window.scrollY + navH;
+    const next = waypoints.find((w) => w > y + 10);
+
+    /* If no waypoint is ahead within the stack, scroll to the
+       very end of the stack (so button then auto-hides). */
+    const target = next !== undefined ? next : stackEndY;
+
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  });
+
+  /* ---------- navbar link highlight ---------- */
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navLinks.forEach((l) => l.classList.remove('is-active'));
+      link.classList.add('is-active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

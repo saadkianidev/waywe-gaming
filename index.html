@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayve Gaming - Enterprise IT Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f97316',
+                        'primary-dark': '#ea580c',
+                        secondary: '#1f2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        gaming: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .font-gaming {
+            font-family: 'Orbitron', sans-serif !important;
+        }
+  
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .stats-card {
+            border: 2px solid #f97316;
+        }
+
+        .stat-icon-bg {
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f97316;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid #f97316;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: #f97316;
+            color: white;
+        }
+
+        .theme-toggle {
+            background: #1f2937;
+            border: 2px solid #f97316;
+        }
+
+        .section-title-line {
+            flex: 1;
+            height: 2px;
+            background: #f97316;
+            margin-left: 1.5rem;
+            max-width: 1000px;
+        }
+
+        .stat-underline {
+            width: 30px;
+            height: 3px;
+            background: #f97316;
+        }
+
+        .avatar-ring {
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .team-card {
+            border: 3px solid #f97316;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .team-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+            padding: 1.5rem;
+        }
+
+        .job-card {
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.02);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            border: 1px solid #e5e7eb;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #f97316;
+            outline: none;
+        }
+
+        .newsletter-bg {
+            background: #1f2937;
+        }
+
+        .scroll-top-btn {
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-content-delayed {
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .studio-text-white {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .studio-text-orange {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #f97316;
+            letter-spacing: 2px;
+        }
+
+        .hiring-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .job-card-arrow {
+            background: #1f2937;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-dark-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #f97316;
+            border-radius: 12px;
+        }
+
+        .contact-input-dark {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            color: white;
+        }
+
+        .contact-input-dark::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .contact-input-dark:focus {
+            border-color: #f97316;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 4L4 14L24 44L44 14L24 4Z" fill="#f97316" stroke="#f97316" stroke-width="2"/>
+                            <path d="M24 12L12 18L24 36L36 18L24 12Z" fill="white"/>
+                            <path d="M24 20L18 23L24 32L30 23L24 20Z" fill="#f97316"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-black text-2xl tracking-tight text-gray-900 dark:text-white">WAYVE</span>
+                        <span class="text-sm font-bold text-primary tracking-wider">GAMING</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center">
+                    <div class="flex items-center space-x-10">
+                        <a href="#home" class="nav-link text-primary font-medium text-base">Home</a>
+                        <a href="#about" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary font-medium text-base">About Us</a>
+                        <a href="#team" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary font-medium text-base">Team</a>
+                        <a href="#careers" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary font-medium text-base">Careers</a>
+                        <a href="#contact" class="nav-link text-gray-700 dark:text-gray-300 hover:text-primary font-medium text-base">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Right Side -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#contact" class="btn-outline text-primary px-6 py-2.5 rounded-lg font-medium text-sm">Contact Us</a>
+                    <button onclick="toggleTheme()" class="theme-toggle p-2.5 rounded-lg flex items-center justify-center w-11 h-11">
+                        <i class="fas fa-sun text-yellow-400 text-sm dark:hidden"></i>
+                        <i class="fas fa-moon text-white text-sm hidden dark:block"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-3">
+                    <button onclick="toggleTheme()" class="theme-toggle p-2 rounded-lg">
+                        <i class="fas fa-sun text-yellow-400 text-sm dark:hidden"></i>
+                        <i class="fas fa-moon text-white text-sm hidden dark:block"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="p-2 text-gray-700 dark:text-gray-300">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" class="block text-primary font-medium py-2">Home</a>
+                <a href="#about" class="block text-gray-700 dark:text-gray-300 font-medium py-2">About Us</a>
+                <a href="#team" class="block text-gray-700 dark:text-gray-300 font-medium py-2">Team</a>
+                <a href="#careers" class="block text-gray-700 dark:text-gray-300 font-medium py-2">Careers</a>
+                <a href="#contact" class="block text-gray-700 dark:text-gray-300 font-medium py-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-20">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2000&q=80" alt="Architecture" class="w-full h-full object-cover">
+            <div class="hero-bg absolute inset-0"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="hero-content text-white">
+                    <p class="text-primary font-semibold text-sm tracking-wider mb-6 flex items-center gap-2">
+                        <span class="w-8 h-0.5 bg-primary inline-block"></span>
+                        PREMIUM CARE FOR EVERY FIBER
+                    </p>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6">
+                        Enterprise IT<br>
+                        Solutions For <span class="text-primary">Modern<br>Businesses</span>
+                    </h1>
+                    <p class="text-lg text-gray-300 mb-10 max-w-lg leading-relaxed">
+                        Empowering Organizations With Secure Cloud Infrastructure, AI-Driven Innovation, Cybersecurity, And Custom Software Development.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-base inline-flex items-center gap-2">
+                            Get Consultation
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#contact" class="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-base hover:bg-gray-100 transition inline-flex items-center gap-2">
+                            Contact Us
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Glass Card -->
+                <div class="hero-content-delayed hidden lg:block">
+                    <div class="glass-card rounded-2xl p-6 max-w-sm ml-auto">
+                        <div class="space-y-5">
+                            <div class="flex items-center gap-4 text-white pb-4 border-b border-white/10">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-gamepad text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-sm">Game</p>
+                                    <p class="font-medium text-sm">Solutions</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-white pb-4 border-b border-white/10">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-sparkles text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-sm">AI & Game</p>
+                                    <p class="font-medium text-sm">Development</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-white pb-4 border-b border-white/10">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-users text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-sm">Multiplayer</p>
+                                    <p class="font-medium text-sm">Gaming</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-white">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-server text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-sm">Live Game</p>
+                                    <p class="font-medium text-sm">Operations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="relative -mt-16 z-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="stats-card bg-white dark:bg-gray-900 rounded-3xl p-8 md:p-12 shadow-xl">
+                <div class="grid lg:grid-cols-5 gap-8 items-start">
+                    <!-- Left Info -->
+                    <div class="lg:col-span-2 lg:border-r lg:border-gray-200 dark:lg:border-gray-700 lg:pr-8">
+                        <div class="section-divider mb-4"></div>
+                        <h3 class="text-2xl font-bold mb-2 leading-tight">BUILT FOR PLAYERS.<br><span class="text-primary">DESIGNED TO LAST.</span></h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm leading-relaxed">Building engaging gaming products for players worldwide.</p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex -space-x-3">
+                                <img src="https://i.pravatar.cc/100?img=11" class="w-10 h-10 rounded-full avatar-ring" alt="Client">
+                                <img src="https://i.pravatar.cc/100?img=12" class="w-10 h-10 rounded-full avatar-ring" alt="Client">
+                                <img src="https://i.pravatar.cc/100?img=13" class="w-10 h-10 rounded-full avatar-ring" alt="Client">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center avatar-ring">
+                                    <i class="fas fa-plus text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-lg font-bold text-gray-900 dark:text-white">25+</span>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Happy Clients</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <div class="stat-icon-bg w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-briefcase text-primary text-lg"></i>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">05+</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Products Built</p>
+                            <div class="stat-underline mx-auto"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-icon-bg w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-users text-primary text-lg"></i>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">100K+</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Players Engaged</p>
+                            <div class="stat-underline mx-auto"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-icon-bg w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-globe text-primary text-lg"></i>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">15+</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Markets Reached</p>
+                            <div class="stat-underline mx-auto"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="stat-icon-bg w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-headset text-primary text-lg"></i>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">24/7</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Player Experience</p>
+                            <div class="stat-underline mx-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h2 class="text-5xl font-black flex items-center font-gaming">
+                    <span class="text-gray-900 dark:text-white font-gaming">ABOUT</span>
+                    <span class="text-primary ml-4 font-gaming">US</span>
+                    <div class="section-title-line"></div>
+                </h2>
+            </div>
+            
+            <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-5xl">
+                We're a passionate team of game developers, designers, and storytellers on a mission to craft unforgettable gaming experiences. From concept to launch, every pixel and mechanic is built with heart, precision, and play in mind. We're a passionate team of game developers, designers, and storytellers on a mission to craft unforgettable gaming experiences. From concept to launch, every pixel and mechanic is built with heart, precision, and play in mind.
+            </p>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h2 class="text-5xl font-black flex items-center">
+                    <span class="text-gray-900 dark:text-white font-gaming">THE</span>
+                    <span class="text-primary ml-4 font-gaming">TEAM</span>
+                    <div class="section-title-line"></div>
+                </h2>
+            </div>
+            
+            <p class="text-gray-600 dark:text-gray-400 max-w-5xl mb-12 leading-relaxed">
+                Behind every great game is a team of visionaries, strategists, and creators. From our CEO to our game designers, developers, and community managers, each member brings unique talent and passion to every project we build. Meet the people powering the play.
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Team Member 1 -->
+                <div class="team-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=500" alt="Eddie Sankari" class="w-full h-96 object-cover">
+                        <div class="team-card-overlay">
+                            <h3 class="text-white text-xl font-bold mb-1">Eddie Sankari</h3>
+                            <p class="text-gray-300 text-sm mb-3">CEO & Founder</p>
+                            <div class="flex justify-end">
+                                <a href="#" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="team-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&h=500" alt="Ayesha Mazhar" class="w-full h-96 object-cover">
+                        <div class="team-card-overlay">
+                            <h3 class="text-white text-xl font-bold mb-1">Ayesha Mazhar</h3>
+                            <p class="text-gray-300 text-sm mb-3">General Manager</p>
+                            <div class="flex justify-end">
+                                <a href="#" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=500" alt="Abdul Ahad" class="w-full h-96 object-cover">
+                        <div class="team-card-overlay">
+                            <h3 class="text-white text-xl font-bold mb-1">Abdul Ahad</h3>
+                            <p class="text-gray-300 text-sm mb-3">Assistant Manager</p>
+                            <div class="flex justify-end">
+                                <a href="#" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&h=500" alt="Numan Ali" class="w-full h-96 object-cover">
+                        <div class="team-card-overlay">
+                            <h3 class="text-white text-xl font-bold mb-1">Numan Ali</h3>
+                            <p class="text-gray-300 text-sm mb-3">Assistant Project Manager</p>
+                            <div class="flex justify-end">
+                                <a href="#" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Studio Section -->
+    <section class="relative py-32">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80" alt="Office" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl">
+                <p class="text-primary font-semibold text-sm tracking-wider mb-4 flex items-center gap-2">
+                    <span class="w-8 h-0.5 bg-primary inline-block"></span>
+                    OUR STUDIO
+                </p>
+                <h2 class="text-6xl md:text-7xl font-gaming font-bold mb-6 leading-tight">
+                    <span class="studio-text-white">Where great</span><br>
+                    <span class="studio-text-white">idea</span> <span class="studio-text-orange">comes to</span><br>
+                    <span class="studio-text-orange">life.</span>
+                </h2>
+                <p class="text-lg text-gray-300 mb-8 leading-relaxed max-w-xl">
+                    Empowering Organizations With Secure Cloud Infrastructure, AI-Driven Innovation, Cybersecurity, And Custom Software Development. Cybersecurity, And Custom Software Development.
+                </p>
+                <a href="#contact" class="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition border-2 border-white">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section id="careers" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <!-- <h2 class="text-5xl font-gaming hiring-text mb-4">
+                    <span class="text-gray-900 dark:text-white">WE'RE</span> <span class="text-primary">HIRING</span>
+                </h2>
+                <div class="w-full h-0.5 bg-primary max-w-4xl"></div> -->
+                <h2 class="text-5xl font-black flex items-center">
+                    <span class="text-gray-900 dark:text-white font-gaming">WE'RE</span>
+                    <span class="text-primary ml-4 font-gaming">HIRING</span>
+                    <div class="section-title-line"></div>
+                </h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-16 mb-16">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">JOB OPENINGS</h3>
+                    <div class="w-16 h-1 bg-primary mb-6"></div>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Are you a talented and motivated individual? Then we would love to have you in our team. Submit us your details in the Contact Us Form. Are you a talented and motivated individual? Then we would love to have you in our team.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="job-card bg-orange-50 dark:bg-orange-900/20 rounded-2xl p-6 flex justify-between items-center cursor-pointer group border-2 border-orange-200 dark:border-orange-800">
+                        <div>
+                            <h4 class="font-gaming font-bold text-lg mb-1 text-gray-900 dark:text-white">Game Developer</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Full Time • Remote / On-site</p>
+                        </div>
+                        <div class="job-card-arrow group-hover:bg-primary transition">
+                            <i class="fas fa-arrow-up-right text-sm"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="job-card bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 flex justify-between items-center cursor-pointer group">
+                        <div>
+                            <h4 class="font-gaming font-bold text-lg mb-1 text-gray-900 dark:text-white">Game Developer</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Full Time • Remote / On-site</p>
+                        </div>
+                        <div class="job-card-arrow group-hover:bg-primary transition">
+                            <i class="fas fa-arrow-up-right text-sm"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="job-card bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 flex justify-between items-center cursor-pointer group">
+                        <div>
+                            <h4 class="font-gaming font-bold text-lg mb-1 text-gray-900 dark:text-white">Game Developer</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Full Time • Remote / On-site</p>
+                        </div>
+                        <div class="job-card-arrow group-hover:bg-primary transition">
+                            <i class="fas fa-arrow-up-right text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="bg-black rounded-2xl p-8 md:p-10">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div class="flex items-center gap-5">
+                        <div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-envelope text-3xl text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white">Get studio updates, jobs alert and more.</h4>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                        <input type="email" placeholder="Your email address" class="px-6 py-3.5 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-primary w-full sm:w-80 text-sm">
+                        <button class="bg-primary text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-primary-dark transition whitespace-nowrap text-sm">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-6xl font-gaming font-black mb-6">
+                    <span class="text-gray-900 dark:text-white font-gaming">GET IN</span> <span class="text-primary relative font-gaming">TOUCH</span>
+                    <div class="w-16 h-1 bg-primary mb-6 mx-auto mt-3"></div>
+                </h2>
+                <h3 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Let's Create Brighter Worlds</h3>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Have a project in mind, a question, or just want to say hello? We'd love to hear from you.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Dark Section -->
+    <section class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="bg-gray-800/50 rounded-2xl p-8 border-2 border-primary/30 backdrop-blur-sm">
+                    <h3 class="text-2xl font-bold mb-6 text-white">Leave Us A Message</h3>
+                    <form class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" placeholder="Full Name" class="bg-gray-700/50 border border-primary/30 rounded-lg px-4 py-3.5 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition w-full">
+                            <input type="email" placeholder="Email Address" class="bg-gray-700/50 border border-primary/30 rounded-lg px-4 py-3.5 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition w-full">
+                        </div>
+                        <textarea rows="6" placeholder="Your Message" class="bg-gray-700/50 border border-primary/30 rounded-lg px-4 py-3.5 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition w-full resize-none"></textarea>
+                        <button type="submit" class="bg-primary text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-primary-dark transition transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="text-white">
+                    <div class="mb-10">
+                        <h3 class="text-3xl font-bold mb-2">Our <span class="text-primary">Details</span></h3>
+                        <div class="w-16 h-1 bg-white mb-6 "></div>
+                        <div class="space-y-5">
+                            <div class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition">
+                                    <i class="fas fa-envelope text-primary group-hover:text-white transition"></i>
+                                </div>
+                                <p class="font-medium text-lg">info@waywegaming.com</p>
+                            </div>
+                            <div class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition">
+                                    <i class="fas fa-phone text-primary group-hover:text-white transition"></i>
+                                </div>
+                                <p class="font-medium text-lg">(800) 659-0691</p>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 group-hover:bg-primary transition">
+                                    <i class="fas fa-map-marker-alt text-primary group-hover:text-white transition"></i>
+                                </div>
+                                <p class="font-medium text-lg">932 Ditmas Ave, Brooklyn, NY 11218</p>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 group-hover:bg-primary transition">
+                                    <i class="fas fa-map-marker-alt text-primary group-hover:text-white transition"></i>
+                                </div>
+                                <p class="font-medium text-lg">857 Street 12, Block B Police Foundation,<br>Islamabad, Pakistan</p>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 group-hover:bg-primary transition">
+                                    <i class="fas fa-map-marker-alt text-primary group-hover:text-white transition"></i>
+                                </div>
+                                <p class="font-medium text-lg">857 Street 12, Block B Police Foundation,<br>Islamabad, Pakistan</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6">Follow Our <span class="text-primary">Journey</span></h3>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition transform hover:scale-110">
+                                <i class="fab fa-linkedin-in text-lg"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition transform hover:scale-110">
+                                <i class="fab fa-linkedin-in text-lg"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition transform hover:scale-110">
+                                <i class="fab fa-linkedin-in text-lg"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition transform hover:scale-110">
+                                <i class="fab fa-linkedin-in text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-8">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <svg width="56" height="56" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 4L4 14L24 44L44 14L24 4Z" fill="#f97316" stroke="#f97316" stroke-width="2"/>
+                            <path d="M24 12L12 18L24 36L36 18L24 12Z" fill="white"/>
+                            <path d="M24 20L18 23L24 32L30 23L24 20Z" fill="#f97316"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-black text-3xl tracking-tight text-white">WAYVE</span>
+                        <span class="text-xs font-bold text-primary tracking-wider">GAMING</span>
+                    </div>
+                </div>
+
+                <!-- Nav Links -->
+                <div class="flex flex-wrap justify-center gap-8 text-sm">
+                    <a href="#home" class="text-primary font-semibold">Home</a>
+                    <a href="#about" class="text-gray-400 hover:text-primary transition font-medium">About Us</a>
+                    <a href="#team" class="text-gray-400 hover:text-primary transition font-medium">Team</a>
+                    <a href="#careers" class="text-gray-400 hover:text-primary transition font-medium">Careers</a>
+                    <a href="#contact" class="text-gray-400 hover:text-primary transition font-medium">Contact</a>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-sm text-gray-500 text-center lg:text-right">
+                    <p>© 2026 WayWe Gaming. All rights reserved.</p>
+                </div>
+            </div>
+            
+            <!-- Scroll to Top Button -->
+            <div class="mt-8 flex justify-center lg:justify-end">
+                <button onclick="scrollToTop()" class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Check for saved theme preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show/Hide Scroll to Top Button
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                scrollTop.classList.remove('opacity-0', 'invisible');
+                scrollTop.classList.add('opacity-100', 'visible');
+            } else {
+                scrollTop.classList.add('opacity-0', 'invisible');
+                scrollTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Form Submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

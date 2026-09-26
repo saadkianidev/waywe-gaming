@@ -1,0 +1,830 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stacked Scroll Slides</title>
+    <style>
+        :root {
+            --radius: 28px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #0a0a0f;
+            color: #fff;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- Normal sections before / after ---------- */
+        .section {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .section h1 {
+            font-size: clamp(2rem, 7vw, 4.5rem);
+            margin: 0 0 12px;
+            letter-spacing: -0.03em;
+        }
+
+        .section p {
+            max-width: 42ch;
+            opacity: 0.6;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ---------- Stacked slides ---------- */
+        .stack {
+            position: relative;
+            /* 1 viewport for the sticky stage + 1 viewport per transition.
+       3 slides => 2 transitions => 100vh + 200vh = 300vh */
+            height: 300vh;
+        }
+
+        .stack__viewport {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .stack__card {
+            position: absolute;
+            inset: 0;
+            padding: 16px;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform-origin: 50% 50%;
+        }
+
+        /* fallback stacking order if JS hasn't run yet */
+        .stack__card:nth-child(1) {
+            z-index: 3;
+        }
+
+        .stack__card:nth-child(2) {
+            z-index: 2;
+        }
+
+        .stack__card:nth-child(3) {
+            z-index: 1;
+        }
+
+        .stack__card-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius);
+            display: grid;
+            place-items: center;
+            align-content: center;
+            padding: clamp(24px, 6vw, 80px);
+            text-align: center;
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.75);
+        }
+
+        .stack__card-inner span {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 16px;
+        }
+
+        .stack__card-inner h2 {
+            font-size: clamp(1.8rem, 6vw, 4rem);
+            margin: 0 0 14px;
+            letter-spacing: -0.02em;
+        }
+
+        .stack__card-inner p {
+            max-width: 38ch;
+            margin: 0;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .stack__card--1 .stack__card-inner {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+
+        .stack__card--2 .stack__card-inner {
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+        }
+
+        .stack__card--3 .stack__card-inner {
+            background: linear-gradient(135deg, #0ba360, #3cba92);
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="section">
+        <div>
+            <h1>Scroll down</h1>
+            <p>The three slides below are stacked. Scrolling peels the top one away to reveal the next.</p>
+        </div>
+    </section>
+
+    <section class="stack" id="stack">
+        <div class="stack__viewport">
+            <div class="stack__card stack__card--1">
+                <div class="stack__card-inner">
+                    <span>01 — Slide one</span>
+                    <h2>Discover</h2>
+                    <p>Keep scrolling — this card slides up and out of the way.</p>
+                </div>
+            </div>
+
+            <div class="stack__card stack__card--2">
+                <div class="stack__card-inner">
+                    <span>02 — Slide two</span>
+                    <h2>Reveal</h2>
+                    <p>It scales up from behind as the previous card leaves.</p>
+                </div>
+            </div>
+
+            <div class="stack__card stack__card--3">
+                <div class="stack__card-inner">
+                    <span>03 — Slide three</span>
+                    <h2>Finish</h2>
+                    <p>This one stays put. Scroll a little further and the whole stack releases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div>
+            <h1>Next section</h1>
+            <p>The stack has ended and normal scrolling resumes.</p>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            const section = document.getElementById('stack');
+            const viewport = section.querySelector('.stack__viewport');
+            const cards = Array.from(section.querySelectorAll('.stack__card'));
+            const N = cards.length;
+
+            const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+            let ticking = false;
+
+            function render() {
+                ticking = false;
+
+                // How many pixels of scrolling the stack section owns
+                const scrollable = section.offsetHeight - viewport.offsetHeight;
+                if (scrollable <= 0) return;
+
+                // 0 → 1 across the whole stack section
+                const progress = clamp(-section.getBoundingClientRect().top / scrollable, 0, 1);
+
+                // 0 → N-1 : each whole number is one completed transition
+                const s = progress * (N - 1);
+
+                for (let i = 0; i < N; i++) {
+                    // how far THIS card has slid out (0 → 1)
+                    const out = clamp(s - i, 0, 1);
+                    // how far THIS card has been revealed (0 → 1)
+                    const reveal = clamp(s - (i - 1), 0, 1);
+
+                    const y = -out * 100;              // slide up by its own height
+                    const scale = 0.9 + 0.1 * reveal;      // grow from 90% → 100%
+
+                    cards[i].style.transform =
+                        `translate3d(0, ${y}%, 0) scale(${scale})`;
+                }
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(render);
+                }
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            render();
+        })();
+    </script>
+
+</body>
+
+</html> -->
+
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixed Background Categories</title>
+    <style>
+        :root {
+            --ease: cubic-bezier(.22, 1, .36, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #0a0a0f;
+            color: #fff;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+     FIXED BACKGROUND STAGE
+     ============================================================ */
+        .bg-stage {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background: #0a0a0f;
+        }
+
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+
+            /* solid fallback color (visible while the photo loads) */
+            background-color: var(--fallback, #14141c);
+
+            /* the photo — set per-layer via --img */
+            background-image: var(--img);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            opacity: 0;
+            transform: scale(1.08);
+            transition: opacity .9s ease, transform 2s var(--ease);
+            will-change: opacity, transform;
+        }
+
+        .bg-layer.is-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* dark overlay ABOVE the photos for text readability */
+        .bg-scrim {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(120% 90% at 50% 20%, transparent 20%, rgba(0, 0, 0, .65) 100%),
+                linear-gradient(to bottom,
+                    rgba(0, 0, 0, .55) 0%,
+                    rgba(0, 0, 0, .15) 40%,
+                    rgba(0, 0, 0, .7) 100%);
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel {
+            min-height: 100vh;
+            min-height: 100svh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: clamp(20px, 6vw, 80px);
+        }
+
+        .panel h2 {
+            margin: 0;
+            font-size: clamp(2.5rem, 9vw, 6rem);
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .92);
+            text-shadow: 0 4px 30px rgba(0, 0, 0, .6);
+
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s var(--ease), transform .8s var(--ease);
+        }
+
+        .panel.in-view h2 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav {
+            position: fixed;
+            right: clamp(14px, 3vw, 38px);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .dot {
+            position: relative;
+            width: 12px;
+            height: 12px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .3);
+            cursor: pointer;
+            transition: background .35s ease, transform .35s ease;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, .6);
+        }
+
+        .dot.is-active {
+            background: #fff;
+            transform: scale(1.5);
+        }
+
+        .dot span {
+            position: absolute;
+            right: 26px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .7rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: #fff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .dot:hover span,
+        .dot.is-active span {
+            opacity: .85;
+        }
+
+        /* scroll hint */
+        .hint {
+            position: fixed;
+            left: 50%;
+            bottom: 26px;
+            transform: translateX(-50%);
+            z-index: 5;
+            font-size: .68rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .5;
+            pointer-events: none;
+            animation: bob 2.2s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translate(-50%, 0);
+            }
+
+            50% {
+                transform: translate(-50%, 8px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .bg-layer {
+                transition: opacity .25s linear;
+                transform: none;
+            }
+
+            .bg-layer.is-active {
+                transform: none;
+            }
+
+            .panel h2 {
+                transition: opacity .25s linear;
+                transform: none;
+            }
+
+            .hint {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-stage" aria-hidden="true">
+
+        <div class="bg-layer is-active" style="--img:url('https://picsum.photos/id/111/1920/1080');
+              --fallback:#1a1a2e;"></div>
+
+        <div class="bg-layer" style="--img:url('https://picsum.photos/id/1015/1920/1080');
+              --fallback:#0a2a3a;"></div>
+
+        <div class="bg-layer" style="--img:url('https://picsum.photos/id/1043/1920/1080');
+              --fallback:#1a1a2e;"></div>
+
+        <div class="bg-scrim"></div>
+    </div>
+
+    <nav class="nav" aria-label="Category navigation">
+        <button class="dot is-active" data-goto="0" aria-label="Cars"><span>Cars</span></button>
+        <button class="dot" data-goto="1" aria-label="Yachts"><span>Yachts</span></button>
+        <button class="dot" data-goto="2" aria-label="Jets"><span>Jets</span></button>
+    </nav>
+
+    <main>
+
+        <section class="panel" data-bg="0">
+            <h2>Cars</h2>
+        </section>
+
+        <section class="panel" data-bg="1">
+            <h2>Yachts</h2>
+        </section>
+
+        <section class="panel" data-bg="2">
+            <h2>Jets</h2>
+        </section>
+
+    </main>
+
+    <div class="hint">Scroll</div>
+
+    <script>
+        (function () {
+            const layers = Array.from(document.querySelectorAll('.bg-layer'));
+            const panels = Array.from(document.querySelectorAll('.panel'));
+            const dots = Array.from(document.querySelectorAll('.dot'));
+
+            layers.forEach((layer) => {
+                const bg = getComputedStyle(layer).backgroundImage;
+                const match = bg.match(/url\(["']?(.*?)["']?\)/);
+                if (match && match[1]) {
+                    const img = new Image();
+                    img.src = match[1];
+                }
+            });
+
+            let current = 0;
+
+            function activate(index) {
+                if (index === current && layers[index]?.classList.contains('is-active')) return;
+                current = index;
+
+                layers.forEach((layer, i) => layer.classList.toggle('is-active', i === index));
+                dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+            }
+
+            const bgObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            activate(Number(entry.target.dataset.bg));
+                        }
+                    });
+                },
+                { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+            );
+            panels.forEach((panel) => bgObserver.observe(panel));
+
+            const revealObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        entry.target.classList.toggle('in-view', entry.isIntersecting);
+                    });
+                },
+                { threshold: 0.35 }
+            );
+            panels.forEach((panel) => revealObserver.observe(panel));
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    const target = panels[Number(dot.dataset.goto)];
+                    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        })();
+    </script>
+
+</body>
+
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shutter Reveal Sections</title>
+<style>
+  :root { --ease: cubic-bezier(.22, 1, .36, 1); }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: #0a0a0f;
+    color: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============================================================
+     THE STACK
+     Each .panel is position:sticky at top:0. They all stick to
+     the viewport top, and because later siblings paint on top,
+     panel 2 slides over panel 1, panel 3 over panel 2 — a shutter.
+     ============================================================ */
+  .stack { position: relative; }
+
+  .panel {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+
+    /* the "shutter lip": a soft shadow cast upward from the top
+       edge, so as the panel slides up you see it covering the one
+       behind it. Off-screen once the panel is fully stuck. */
+    box-shadow: 0 -40px 60px -20px rgba(0,0,0,.85);
+  }
+
+  /* ---------- background photo ---------- */
+  .panel__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #14141c;   /* visible while loading */
+    z-index: 0;
+    will-change: transform;
+    transform: scale(1.2);       /* headroom for parallax */
+  }
+
+  /* dark overlay for text readability */
+  .panel__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 90% at 50% 20%, transparent 20%, rgba(0,0,0,.65) 100%),
+      linear-gradient(to bottom,
+        rgba(0,0,0,.55) 0%,
+        rgba(0,0,0,.15) 40%,
+        rgba(0,0,0,.7) 100%);
+  }
+
+  /* ---------- content ---------- */
+  .panel__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: clamp(20px, 6vw, 80px);
+    max-width: 900px;
+
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  .panel.in-view .panel__content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .panel__eyebrow {
+    display: inline-block;
+    font-size: .7rem;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    opacity: .65;
+    margin-bottom: 20px;
+  }
+
+  .panel__content h2 {
+    margin: 0 0 18px;
+    font-size: clamp(2.5rem, 9vw, 6rem);
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: rgba(255,255,255,.95);
+    text-shadow: 0 4px 40px rgba(0,0,0,.7);
+  }
+
+  .panel__content p {
+    margin: 0 auto;
+    max-width: 42ch;
+    font-size: clamp(.95rem, 2.2vw, 1.08rem);
+    line-height: 1.7;
+    color: rgba(255,255,255,.82);
+  }
+
+  /* ---------- nav dots ---------- */
+  .nav {
+    position: fixed;
+    right: clamp(14px, 3vw, 38px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .dot {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    cursor: pointer;
+    transition: background .35s ease, transform .35s ease;
+  }
+  .dot:hover { background: rgba(255,255,255,.6); }
+  .dot.is-active { background: #fff; transform: scale(1.5); }
+
+  .dot span {
+    position: absolute;
+    right: 26px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .7rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .dot:hover span,
+  .dot.is-active span { opacity: .85; }
+
+  /* ---------- scroll hint ---------- */
+  .hint {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-size: .68rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    opacity: .55;
+    pointer-events: none;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, 8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .panel__content { transition: opacity .25s linear; transform: none; }
+    .hint { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Category navigation">
+  <button class="dot is-active" data-goto="0"><span>Cars</span></button>
+  <button class="dot"           data-goto="1"><span>Yachts</span></button>
+  <button class="dot"           data-goto="2"><span>Jets</span></button>
+</nav>
+
+<main class="stack">
+
+  <section class="panel">
+    <div class="panel__bg" style="background-image:url('https://picsum.photos/id/111/1920/1080')"></div>
+    <div class="panel__content">
+      <span class="panel__eyebrow">01 — Collection</span>
+      <h2>Cars</h2>
+      <p>Scroll down — the next panel slides up over this one like a shutter closing.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel__bg" style="background-image:url('https://picsum.photos/id/1015/1920/1080')"></div>
+    <div class="panel__content">
+      <span class="panel__eyebrow">02 — Collection</span>
+      <h2>Yachts</h2>
+      <p>Each new section covers the previous one. Scroll back up and it lifts away again.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel__bg" style="background-image:url('https://picsum.photos/id/1043/1920/1080')"></div>
+    <div class="panel__content">
+      <span class="panel__eyebrow">03 — Collection</span>
+      <h2>Jets</h2>
+      <p>The last panel stays put once fully in view — normal scrolling resumes after it.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="hint">Scroll</div>
+
+<script>
+(function () {
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  const dots   = Array.from(document.querySelectorAll('.dot'));
+
+  /* preload every background image so the reveal is instant */
+  panels.forEach((p) => {
+    const bg = p.querySelector('.panel__bg');
+    const url = bg.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1];
+    if (url) { const img = new Image(); img.src = url; }
+  });
+
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const vh = window.innerHeight;
+    let activeIdx = 0;
+
+    panels.forEach((panel, i) => {
+      const rect = panel.getBoundingClientRect();
+
+      /* A panel becomes "active" once its top edge has slid up past
+         35% of the viewport — i.e. it's mostly covering the screen. */
+      const isActive = rect.top <= vh * 0.35;
+      panel.classList.toggle('in-view', isActive);
+      if (isActive) activeIdx = i;
+
+      /* Subtle parallax: the photo drifts slower than the panel,
+         making it feel fixed while the panel slides over it. */
+      const bg = panel.querySelector('.panel__bg');
+      const shift = Math.max(-40, Math.min(40, rect.top * 0.12));
+      bg.style.transform = `translate3d(0, ${shift}px, 0) scale(1.2)`;
+    });
+
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === activeIdx));
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+
+  /* dot navigation — smooth-jump to a panel */
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      panels[Number(dot.dataset.goto)]
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html> -->
