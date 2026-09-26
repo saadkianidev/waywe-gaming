@@ -24,7 +24,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t bg-white dark:bg-gray-900 dark:border-gray-800 bg-black text-white">
+    <footer className="border-t bg-white dark:bg-black dark:border-gray-800 bg-black text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-7 border-b border-gray-800 py-5 md:flex-row">
           <Logo size={48} variant="footer" />

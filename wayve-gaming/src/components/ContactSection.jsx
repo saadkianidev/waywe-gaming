@@ -20,17 +20,35 @@ const INITIAL_FORM = { name: '', email: '', country: '', phone: '', message: '' 
 export default function ContactSection() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSent(true);
-    setForm(INITIAL_FORM);
-    setTimeout(() => setSent(false), 4000);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Unable to save your message.');
+
+      setSent(true);
+      setForm(INITIAL_FORM);
+    } catch (error) {
+      setSubmitError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -116,13 +134,19 @@ export default function ContactSection() {
               />
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="btn-primary rounded-lg px-8 py-3 text-xs font-semibold text-white sm:col-span-2 sm:w-fit"
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
               {sent && (
                 <p className="text-sm text-primary sm:col-span-2">
                   Thank you for your message! We&apos;ll get back to you soon.
+                </p>
+              )}
+              {submitError && (
+                <p role="alert" className="text-sm text-red-600 sm:col-span-2 dark:text-red-400">
+                  {submitError}
                 </p>
               )}
             </form>

@@ -8,7 +8,7 @@ export default function Games() {
         <PageHero
             imagePath="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=2000&q=85"
             pageName="Let’s Talk Gaming"
-            heading={<>Let’s <span className="text-primary">Talk</span> Gaming</>}
+            heading={<>Let’s <span className="text-primary-dark">Talk</span> Gaming</>}
             description="empowering organizations with secure cloud infrastructure, AI-driven innovation, cybersecurity, and custom software development. empowering organizations with secure cloud infrastructure."
         />
     

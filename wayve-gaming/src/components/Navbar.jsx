@@ -42,7 +42,7 @@ export default function Navbar({ onToggleTheme, currentPath = '/' }) {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+    <nav className="fixed w-full z-50 bg-white dark:bg-black border-b border-gray-100 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -52,7 +52,7 @@ export default function Navbar({ onToggleTheme, currentPath = '/' }) {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center">
-            <div className="flex items-center space-x-10">
+            <div className="flex items-center space-x-8">
               {LINKS.map((link) => (
                 <a
                   key={link.href}
@@ -74,9 +74,9 @@ export default function Navbar({ onToggleTheme, currentPath = '/' }) {
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="#contact"
+              href="/contact"
               onClick={() => handleNavClick('#contact')}
-              className="btn-outline text-primary px-6 py-2.5 rounded-lg font-medium text-sm"
+              className="btn-secondary px-3 py-2"
             >
               Contact Us
             </a>

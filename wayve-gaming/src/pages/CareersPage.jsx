@@ -51,6 +51,8 @@ export default function CareersPage() {
         body: JSON.stringify(form),
       });
 
+      console.log(response);
+      
       if (!response.ok) throw new Error('Unable to save the application.');
       setSubmitted(true);
     } catch (error) {
@@ -63,7 +65,7 @@ export default function CareersPage() {
       <PageHero
         imagePath="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=85"
         pageName="Careers"
-        heading={<>Build the next <span className="text-primary">big thing.</span></>}
+        heading={<>Build the next <span className="text-primary-dark">big thing.</span></>}
         description="Bring your ideas, craft, and curiosity to a team making games players remember."
       />
 
@@ -71,7 +73,7 @@ export default function CareersPage() {
         <div className="mb-10 flex items-center justify-between gap-2">
           {STEPS.map((label, index) => (
             <div key={label} className="flex flex-1 items-center gap-2">
-              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${index <= step ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
+              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${index <= step ? 'bg-primary-dark text-white' : 'bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
                 {index + 1}
               </div>
               <span className={`hidden text-xs sm:block ${index <= step ? 'text-gray-900 dark:text-white' : 'text-gray-500'}`}>
@@ -97,7 +99,7 @@ export default function CareersPage() {
           <form onSubmit={step === STEPS.length - 1 ? submitApplication : nextStep} className="rounded-2xl border border-gray-300 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-950 sm:p-10">
             {step === 0 && (
               <div>
-                <p className="text-xs uppercase tracking-widest text-primary">Step 1</p>
+                <p className="text-xs uppercase tracking-widest text-primary-dark">Step 1</p>
                 <h2 className="mt-3 font-gaming text-3xl text-gray-900 dark:text-white">What role are you applying for?</h2>
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
                   {['Game Developer', 'Game Designer', '3D Artist', 'Project Manager'].map((role) => (
@@ -113,7 +115,7 @@ export default function CareersPage() {
 
             {step === 1 && (
               <div>
-                <p className="text-xs uppercase tracking-widest text-primary">Step 2</p>
+                <p className="text-xs uppercase tracking-widest text-primary-dark">Step 2</p>
                 <h2 className="mt-3 font-gaming text-3xl text-gray-900 dark:text-white">Tell us about yourself</h2>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                   <input name="userName" value={form.userName} onChange={updateField} placeholder="Full name" className={FIELD_CLASS} required />
@@ -125,7 +127,7 @@ export default function CareersPage() {
 
             {step === 2 && (
               <div>
-                <p className="text-xs uppercase tracking-widest text-primary">Step 3</p>
+                <p className="text-xs uppercase tracking-widest text-primary-dark">Step 3</p>
                 <h2 className="mt-3 font-gaming text-3xl text-gray-900 dark:text-white">Show us your experience</h2>
                 <div className="mt-8 space-y-4">
                   <select name="experience" value={form.experience} onChange={updateField} className={FIELD_CLASS} required>

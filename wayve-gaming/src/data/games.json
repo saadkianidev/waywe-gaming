@@ -1,11 +1,17 @@
 {
   "games": [
     {
-      "slug": "shadow-protocol",
-      "title": "Shadow Protocol",
+      "slug": "shadow-protocols",
+      "title": "Shadow Protocolassa",
       "genre": "Action RPG",
-      "tags": ["Action", "RPG", "Multiplayer"],
+      "tags": [
+        "Action",
+        "RPG",
+        "Multiplayer"
+      ],
       "image": "https://picsum.photos/id/1/1200/700",
+      "androidUrl": "https://play.google.com/store/search?q=Shadow%20Protocol&c=apps",
+      "iosUrl": "https://apps.apple.com/us/search?term=Shadow%20Protocol",
       "description": "A tactical multiplayer action RPG built around squad strategy, high-stakes missions, and a living world.",
       "screenshots": [
         "https://picsum.photos/id/10/900/560",
@@ -56,8 +62,14 @@
       "slug": "midnight-shift",
       "title": "Midnight Shift",
       "genre": "Psychological Horror",
-      "tags": ["Horror", "Adventure", "Story"],
+      "tags": [
+        "Horror",
+        "Adventure",
+        "Story"
+      ],
       "image": "https://picsum.photos/id/13/1200/700",
+      "androidUrl": "https://play.google.com/store/search?q=Midnight%20Shift&c=apps",
+      "iosUrl": "https://apps.apple.com/us/search?term=Midnight%20Shift",
       "description": "Uncover the truth behind a strange night shift where every identity may be hiding a darker story.",
       "screenshots": [
         "https://picsum.photos/id/14/900/560",
@@ -108,8 +120,14 @@
       "slug": "grand-mafia",
       "title": "Grand Mafia",
       "genre": "Strategy",
-      "tags": ["Strategy", "Simulation", "Multiplayer"],
+      "tags": [
+        "Strategy",
+        "Simulation",
+        "Multiplayer"
+      ],
       "image": "https://picsum.photos/id/17/1200/700",
+      "androidUrl": "https://play.google.com/store/search?q=Grand%20Mafia&c=apps",
+      "iosUrl": "https://apps.apple.com/us/search?term=Grand%20Mafia",
       "description": "Build an empire, manage alliances, and outsmart rival crews in a city that never sleeps.",
       "screenshots": [
         "https://picsum.photos/id/18/900/560",
@@ -160,8 +178,14 @@
       "slug": "neon-arena",
       "title": "Neon Arena",
       "genre": "Competitive Shooter",
-      "tags": ["Shooter", "Competitive", "Esports"],
+      "tags": [
+        "Shooter",
+        "Competitive",
+        "Esports"
+      ],
       "image": "https://picsum.photos/id/21/1200/700",
+      "androidUrl": "https://play.google.com/store/search?q=Neon%20Arena&c=apps",
+      "iosUrl": "https://apps.apple.com/us/search?term=Neon%20Arena",
       "description": "Fast rounds, expressive movement, and team tactics collide in a bright competitive arena.",
       "screenshots": [
         "https://picsum.photos/id/22/900/560",
