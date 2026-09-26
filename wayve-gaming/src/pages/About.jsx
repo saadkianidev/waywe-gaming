@@ -46,8 +46,8 @@ const metrics = [
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-12 sm:px-10 lg:grid-cols-[1.15fr_1fr] lg:px-12">
         <Reveal>
           <div>
-            <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-4xl">
-              Who <span className="text-primary">We Are</span>
+            <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
+              Who <span className="text-primary-dark">We Are</span>
             </h2>
             <p className="mt-3 max-w-xl text-[16px] leading-relaxed text-gray-600 dark:text-gray-100">
               We&apos;re a passionate team of game developers, designers, and storytellers on a
@@ -62,14 +62,10 @@ const metrics = [
             {metrics.map((metric, index) => (
                 <Reveal key={`${metric.label}-${index}`} delay={index * 80}>
                 <div
-                    className={`flex min-h-20 flex-col items-center justify-center rounded-xl border border-gray-600 text-center ${
-                    index === 1
-                      ? 'border-primary bg-orange-50 dark:bg-gray-900'
-                      : 'bg-white dark:bg-black'
-                    }`}
+                    className="about-glow-card flex min-h-28 flex-col items-center justify-center rounded-xl p-4 text-center"
                 >
-                    <strong className="text-xl text-gray-800 dark:text-gray-200">{metric.number}</strong>
-                    <span className="mt-2 text-[15px] text-gray-600 dark:text-gray-300">{metric.label}</span>
+                    <strong className="about-glow-badge flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold">{metric.number}</strong>
+                    <span className="mt-3 text-[15px] font-semibold">{metric.label}</span>
                 </div>
                 </Reveal>
             ))}
@@ -78,8 +74,8 @@ const metrics = [
 
       <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-10 lg:px-12">
         <Reveal>
-          <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-4xl">
-            Our <span className="text-primary">Mission</span>
+          <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
+            Our <span className="text-primary-dark">Mission</span>
           </h2>
           <p className="mt-3 text-[16px] leading-relaxed text-gray-600 dark:text-gray-100">
             We&apos;re a passionate team of game developers, designers, and storytellers on a
@@ -93,10 +89,10 @@ const metrics = [
       <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-10 lg:px-12">
         <Reveal>
           <div className="text-center">
-            <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-4xl">
-              What Makes Us <span className="text-primary">Different</span>
+            <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
+              What Makes Us <span className="text-primary-dark">Different</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            <p className="mx-auto mt-3 max-w-4xl text-md leading-relaxed text-gray-600 dark:text-gray-400">
               We&apos;re a passionate team of game developers, designers, and storytellers on a
               mission to craft unforgettable gaming experiences. From concept to launch, every
               pixel and mechanic is built with heart, precision, and play in mind.
@@ -117,12 +113,12 @@ const metrics = [
             {['Business Partnership', 'Business Partnership', 'Business Partnership', 'Business Partnership'].map(
               (title, index) => (
                 <Reveal key={`${title}-${index}`} delay={index * 80}>
-                  <div className="rounded-xl border border-gray-300 bg-gray-50 p-4 transition hover:border-primary dark:border-gray-600 dark:bg-gray-950">
-                    <h3 className="font-gaming text-sm text-gray-900 dark:text-white">
-                      <span className="mr-3 text-primary">✓</span>
-                      {title.split(' ')[0]} <span className="text-primary">{title.split(' ').slice(1).join(' ')}</span>
+                  <div className="about-glow-card rounded-xl p-4">
+                    <h3 className="font-gaming text-md text-gray-900 dark:text-white">
+                      <span className="mr-3 text-primary-dark">✓</span>
+                      {title.split(' ')[0]} <span className="text-primary-dark">{title.split(' ').slice(1).join(' ')}</span>
                     </h3>
-                    <p className="mt-2 pl-7 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+                    <p className="mt-2 pl-7 text-sm leading-relaxed text-gray-900 dark:text-gray-100">
                       We&apos;re a passionate team of game developers, designers, and storytellers
                       on a mission to craft unforgettable gaming experiences. From concept to
                       launch.
@@ -138,10 +134,10 @@ const metrics = [
       <section className="mx-auto grid max-w-7xl gap-8 px-6 pb-20 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:px-12">
         <Reveal>
           <div>
-            <h2 className="max-w-lg font-gaming text-3xl leading-tight text-gray-900 dark:text-white sm:text-4xl">
-              Why Our Clients Stay <span className="text-primary">for Years</span>
+            <h2 className="max-w-lg font-gaming text-3xl leading-tight text-gray-900 dark:text-white sm:text-5xl">
+              Why Our Clients Stay <span className="text-primary-dark">for Years</span>
             </h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            <p className="mt-4 max-w-xl text-md leading-relaxed text-gray-900 dark:text-gray-100">
               We&apos;re a passionate team of game developers, designers, and storytellers on a
               mission to craft unforgettable gaming experiences. From concept to launch, every
               pixel and mechanic is built with heart, precision, and play in mind.
@@ -153,8 +149,8 @@ const metrics = [
           {['Growth-Focused Execution', 'Growth-Focused Execution', 'Growth-Focused Execution', 'Growth-Focused Execution', 'Growth-Focused Execution', 'Growth-Focused Execution'].map(
             (label, index) => (
               <Reveal key={`${label}-${index}`} delay={index * 60}>
-                <div className={`flex items-center gap-3 rounded-lg border px-3 py-3 text-xs text-gray-800 dark:text-gray-200 ${index === 1 ? 'border-primary bg-orange-50 dark:bg-gray-900' : 'border-gray-300 bg-white dark:border-gray-600 dark:bg-black'}`}>
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] text-white">
+                <div className="about-glow-card flex items-center gap-3 rounded-lg px-3 py-3 text-sm">
+                  <span className="about-glow-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-bold">
                     01
                   </span>
                   {label}
@@ -167,7 +163,7 @@ const metrics = [
 
       <CallToAction
         imagePath="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=85"
-        heading={<>Ready to Join the <span className="text-primary">mission?</span></>}
+        heading={<>Ready to Join the <span className="text-primary-dark">mission?</span></>}
         description="Empowering organizations with secure cloud infrastructure, AI-driven innovation, cybersecurity, and custom software development."
         buttonLabel="Get Consultation"
         buttonHref="/#contact"
@@ -177,3 +173,4 @@ const metrics = [
     </div>
   );
 }
+

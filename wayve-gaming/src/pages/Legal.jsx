@@ -51,7 +51,7 @@ export default function Legal() {
       <PageHero
         imagePath="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=2000&q=85"
         pageName="Privacy Policy"
-        heading={<>Your <span className="text-primary">Privacy</span> Matters</>}
+        heading={<>Your <span className="text-primary-dark">Privacy</span> Matters</>}
         description="Learn how WayWe Gaming protects your information and the terms that guide the use of our games and services."
       />
 
@@ -65,13 +65,13 @@ export default function Legal() {
                 {/* ---------- Heading ---------- */}
                 <h2 className="font-gaming text-2xl font-bold tracking-wide sm:text-3xl">
                   {section.accentFirst ? (
-                    <span className="text-primary">{section.heading}</span>
+                    <span className="text-primary-dark">{section.heading}</span>
                   ) : (
                     <>
                       <span className="text-gray-900 dark:text-gray-100">
                         {section.heading.replace(section.accentWord, '').trim()}
                       </span>{' '}
-                      <span className="text-primary">{section.accentWord}</span>
+                      <span className="text-primary-dark">{section.accentWord}</span>
                     </>
                   )}
                 </h2>
@@ -85,7 +85,7 @@ export default function Legal() {
                       <a
                         key={i}
                         href={part.href}
-                        className="text-primary underline underline-offset-2 transition  dark:text-primary-400 dark:hover:text-blue-300"
+                        className="text-primary-dark underline underline-offset-2 transition  dark:text-primary-400 dark:hover:text-blue-300"
                       >
                         {part.link}
                       </a>
@@ -112,7 +112,7 @@ export default function Legal() {
             ============================================================ */}
         <section className="mt-14 border-t border-gray-200 pt-8 dark:border-gray-800">
           <h2 className="font-gaming text-2xl font-bold tracking-wide sm:text-3xl">
-            <span className="text-primary">Contact</span>{' '}
+            <span className="text-primary-dark">Contact</span>{' '}
             <span className="text-gray-900 dark:text-gray-100">Us</span>
           </h2>
 
@@ -121,14 +121,14 @@ export default function Legal() {
             contact us at{' '}
             <a
               href={`mailto:${CONTACT.email}`}
-              className="text-primary underline underline-offset-2 transition hover:text-primary-400 dark:text-primary-400 dark:hover:text-blue-300"
+              className="text-primary-dark underline underline-offset-2 transition hover:text-primary-400 dark:text-primary-400 dark:hover:text-blue-300"
             >
               {CONTACT.email}
             </a>
             .
           </p>
 
-          <p className="mt-6 font-semibold text-primary">
+          <p className="mt-6 font-semibold text-primary-dark">
             For questions about this Privacy Policy, please contact us at {CONTACT.phone}.
           </p>
         </section>

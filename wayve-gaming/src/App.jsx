@@ -7,6 +7,9 @@ import GameDetail from './pages/GameDetail';
 import Contact from './pages/Contact';
 import CareersPage from './pages/CareersPage';
 import Legal from './pages/Legal';
+import CareerData from './pages/CareerData';
+import ContactData from './pages/ContactData';
+import GameCrud from './pages/GameCrud';
 import Footer from './components/Footer';
 import useTheme from './hooks/useTheme';
 import LoadingScreen from './components/LoadingScreen';
@@ -21,6 +24,9 @@ export default function App() {
   const gameDetailMatch = normalizedPath.match(/^\/games\/([^/]+)$/);
   const isContactPage = normalizedPath === '/contact';
   const isCareersPage = normalizedPath === '/careers';
+  const isCareerDataPage = normalizedPath === '/career-data';
+  const isContactDataPage = normalizedPath === '/contact-data';
+  const isGameCrudPage = normalizedPath === '/game-crud';
   const isLegalPage = ['/legal', '/privacy'].includes(normalizedPath);
 
   useEffect(() => {
@@ -78,6 +84,12 @@ export default function App() {
           <Games />
         ) : gameDetailMatch ? (
           <GameDetail slug={gameDetailMatch[1]} />
+        ) : isCareerDataPage ? (
+          <CareerData />
+        ) : isContactDataPage ? (
+          <ContactData />
+        ) : isGameCrudPage ? (
+          <GameCrud />
         ) : isContactPage ? (
           <Contact />
         ) : isCareersPage ? (
