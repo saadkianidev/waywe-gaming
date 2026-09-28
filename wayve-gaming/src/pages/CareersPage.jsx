@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PageHero from '../components/PageHero';
+import { addStoredItem, createClientSubmission, readJsonResponse, productionApiMessage } from '../utils/api';
 
 const STEPS = ['Role', 'About You', 'Experience', 'Review'];
 const INITIAL_FORM = {
@@ -50,12 +51,14 @@ export default function CareersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-
-      console.log(response);
-      
-      if (!response.ok) throw new Error('Unable to save the application.');
+      await readJsonResponse(response, productionApiMessage('Submitting applications'));
       setSubmitted(true);
     } catch (error) {
+      if (error.message === productionApiMessage('Submitting applications')) {
+        addStoredItem('wayve:applications', createClientSubmission('application', form));
+        setSubmitted(true);
+        return;
+      }
       setSubmitError(error.message);
     }
   };

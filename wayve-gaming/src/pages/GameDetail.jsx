@@ -167,7 +167,7 @@ export default function GameDetail({ slug }) {
         {/* ============================================================
     GAME SCREENSHOTS
     ============================================================ */}
-        <Reveal>
+        <Reveal className="sm:pt-20 ">
           <h2 className="mt-16 font-gaming text-3xl font-bold tracking-wide text-gray-900 dark:text-gray-100 sm:text-5xl">
             Game <span className="text-primary-dark">Screenshots</span>
           </h2>
@@ -204,7 +204,7 @@ export default function GameDetail({ slug }) {
         {/* ============================================================
     KEY FEATURES
     ============================================================ */}
-        <Reveal>
+        <Reveal className="sm:pt-20">
           <h2 className="mt-16 font-gaming text-3xl font-bold tracking-wide text-gray-900 dark:text-gray-100 sm:text-6xl">
             Key <span className="text-primary-dark">Features</span>
           </h2>
@@ -213,7 +213,7 @@ export default function GameDetail({ slug }) {
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {game.features.map((feature, index) => (
             <Reveal key={feature.title} delay={index * 80}>
-              <div className="h-full rounded-xl border border-primary/70 bg-white p-5 transition duration-300 hover:border-primary hover:shadow-[0_15px_40px_-20px_rgba(249,115,22,0.5)] dark:bg-gray-950">
+              <div className="h-full rounded-xl border border-primary/70 bg-white p-5 transition duration-300 hover:border-primary hover:shadow-[0_15px_40px_-20px_rgba(249,115,22,0.5)] dark:bg-black">
                 {/* Icon */}
                 <div className="flex h-10 w-10 items-center justify-center">
                   <i className="fas fa-gamepad text-2xl text-gray-800 dark:text-gray-200" />
@@ -237,8 +237,8 @@ export default function GameDetail({ slug }) {
         {/* ============================================================
     DEVICE REQUIREMENTS
     ============================================================ */}
-        <Reveal>
-          <h2 className="mt-16 font-gaming text-3xl font-bold tracking-wide text-gray-900 dark:text-gray-100 sm:text-4xl">
+        <Reveal className="sm:pt-20">
+          <h2 className="mt-16 font-gaming text-3xl font-bold tracking-wide text-gray-900 dark:text-gray-100 sm:text-6xl">
             Device <span className="text-primary-dark">Requirements</span>
           </h2>
         </Reveal>
@@ -249,7 +249,7 @@ export default function GameDetail({ slug }) {
             { key: 'recommended', title: 'Recommended Requirements', icon: 'fa-gamepad' },
           ].map(({ key, title, icon }) => (
             <Reveal key={key}>
-              <div className="h-full rounded-xl border border-primary/70 bg-white p-6 transition duration-300 hover:border-primary dark:bg-gray-950">
+              <div className="h-full rounded-xl border border-primary/70 bg-white p-6 transition duration-300 hover:border-primary dark:bg-black">
 
                 {/* Card header */}
                 <div className="flex items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-800">

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import contactData from '../data/contactMessages.json';
+import { getStoredItems, readJsonResponse, productionApiMessage } from '../utils/api';
 
 export default function ContactData() {
   const [contacts, setContacts] = useState([]);
@@ -10,15 +12,16 @@ export default function ContactData() {
 
     fetch('/api/contacts')
       .then(async (response) => {
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Unable to load contact messages.');
-        return result;
+        return readJsonResponse(response, productionApiMessage('Loading contact messages'));
       })
       .then((result) => {
         if (isActive) setContacts(result.contacts ?? []);
       })
       .catch((requestError) => {
-        if (isActive) setError(requestError.message);
+        if (isActive) {
+          setContacts(getStoredItems('wayve:contacts', contactData.contacts ?? []));
+          setError('');
+        }
       })
       .finally(() => {
         if (isActive) setIsLoading(false);

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import gamesData from '../data/games.json';
+import { getStoredItems, readJsonResponse, productionApiMessage, setStoredItems } from '../utils/api';
 
 const DEFAULT_REQUIREMENTS = {
   platform: '',
@@ -78,15 +80,16 @@ export default function GameCrud() {
 
     fetch('/api/games')
       .then(async (response) => {
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Unable to load games.');
-        return result;
+        return readJsonResponse(response, productionApiMessage('Loading games'));
       })
       .then((result) => {
         if (isActive) setGames(result.games ?? []);
       })
       .catch((requestError) => {
-        if (isActive) setError(requestError.message);
+        if (isActive) {
+          setGames(getStoredItems('wayve:games', gamesData.games ?? []));
+          setError('');
+        }
       })
       .finally(() => {
         if (isActive) setIsLoading(false);
@@ -117,8 +120,27 @@ export default function GameCrud() {
     setError('');
     setNotice('');
 
+    const game = toGame(draft);
+    const saveLocally = () => {
+      const currentGames = getStoredItems('wayve:games', gamesData.games ?? []);
+      if (!editingSlug && currentGames.some((item) => item.slug === game.slug)) {
+        throw new Error('A game with this slug already exists.');
+      }
+      if (editingSlug && currentGames.some((item) => item.slug === game.slug && item.slug !== editingSlug)) {
+        throw new Error('A game with this slug already exists.');
+      }
+
+      const updatedGames = editingSlug
+        ? currentGames.map((item) => item.slug === editingSlug ? game : item)
+        : [...currentGames, game];
+      setStoredItems('wayve:games', updatedGames);
+      setGames(updatedGames);
+      setDraft(createDraft());
+      setEditingSlug('');
+      setNotice(editingSlug ? 'Game updated.' : 'Game added.');
+    };
+
     try {
-      const game = toGame(draft);
       const endpoint = editingSlug
         ? `/api/games/${encodeURIComponent(editingSlug)}`
         : '/api/games';
@@ -127,8 +149,7 @@ export default function GameCrud() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(game),
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Unable to save the game.');
+      const result = await readJsonResponse(response, productionApiMessage('Saving games'));
 
       setGames((current) => editingSlug
         ? current.map((item) => item.slug === editingSlug ? result.game : item)
@@ -137,12 +158,19 @@ export default function GameCrud() {
       setEditingSlug('');
       setNotice(editingSlug ? 'Game updated.' : 'Game added.');
     } catch (requestError) {
-      setError(requestError.message);
+      if (requestError.message === productionApiMessage('Saving games')) {
+        try {
+          saveLocally();
+        } catch (fallbackError) {
+          setError(fallbackError.message);
+        }
+      } else {
+        setError(requestError.message);
+      }
     } finally {
       setIsSaving(false);
     }
   };
-
   const editGame = (game) => {
     setDraft(createDraft(game));
     setEditingSlug(game.slug);
@@ -156,18 +184,28 @@ export default function GameCrud() {
     setError('');
     setNotice('');
 
+    const deleteLocally = () => {
+      const updatedGames = getStoredItems('wayve:games', gamesData.games ?? []).filter((item) => item.slug !== game.slug);
+      setStoredItems('wayve:games', updatedGames);
+      setGames(updatedGames);
+      if (editingSlug === game.slug) resetEditor();
+      setNotice('Game deleted.');
+    };
+
     try {
       const response = await fetch(`/api/games/${encodeURIComponent(game.slug)}`, { method: 'DELETE' });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Unable to delete the game.');
+      const result = await readJsonResponse(response, productionApiMessage('Deleting games'));
       setGames(result.games ?? []);
       if (editingSlug === game.slug) resetEditor();
       setNotice('Game deleted.');
     } catch (requestError) {
-      setError(requestError.message);
+      if (requestError.message === productionApiMessage('Deleting games')) {
+        deleteLocally();
+      } else {
+        setError(requestError.message);
+      }
     }
   };
-
   return (
     <section className="min-h-screen bg-white px-4 pb-16 pt-28 text-gray-900 dark:bg-black dark:text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

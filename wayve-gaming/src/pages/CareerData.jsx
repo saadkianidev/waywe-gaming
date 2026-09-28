@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import careerData from '../data/careerApplications.json';
+import { getStoredItems, readJsonResponse, productionApiMessage } from '../utils/api';
 
 export default function CareerData() {
   const [applications, setApplications] = useState([]);
@@ -10,15 +12,16 @@ export default function CareerData() {
 
     fetch('/api/applications')
       .then(async (response) => {
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Unable to load applications.');
-        return result;
+        return readJsonResponse(response, productionApiMessage('Loading applications'));
       })
       .then((result) => {
         if (isActive) setApplications(result.applications ?? []);
       })
       .catch((requestError) => {
-        if (isActive) setError(requestError.message);
+        if (isActive) {
+          setApplications(getStoredItems('wayve:applications', careerData.applications ?? []));
+          setError('');
+        }
       })
       .finally(() => {
         if (isActive) setIsLoading(false);

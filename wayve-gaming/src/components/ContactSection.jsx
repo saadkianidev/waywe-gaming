@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Reveal from './Reveal';
+import { addStoredItem, createClientSubmission, readJsonResponse, productionApiMessage } from '../utils/api';
 
 const DETAILS = [
   { icon: 'fa-envelope', text: 'info@waywegaming.com' },
@@ -39,12 +40,17 @@ export default function ContactSection() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Unable to save your message.');
+      await readJsonResponse(response, productionApiMessage('Sending messages'));
 
       setSent(true);
       setForm(INITIAL_FORM);
     } catch (error) {
+      if (error.message === productionApiMessage('Sending messages')) {
+        addStoredItem('wayve:contacts', createClientSubmission('contact', form));
+        setSent(true);
+        setForm(INITIAL_FORM);
+        return;
+      }
       setSubmitError(error.message);
     } finally {
       setIsSubmitting(false);
@@ -91,7 +97,7 @@ export default function ContactSection() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Full Name"
-                className="rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-300 sm:focus:border-sky-500"
+                className="rounded-lg border border-gray-300 bg-white/50 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-white/10 dark:text-white dark:placeholder-gray-300 sm:focus:border-sky-500"
               />
               <input
                 type="email"
@@ -100,19 +106,19 @@ export default function ContactSection() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                className="rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-300"
+                className="rounded-lg border border-gray-300 bg-white/50 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-white/10 dark:text-white dark:placeholder-gray-300 sm:focus:border-sky-500"
               />
               <select
                 name="country"
                 required
                 value={form.country}
                 onChange={handleChange}
-                className="rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-xs text-gray-700 focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-gray-300"
+                className="rounded-lg border border-gray-300 bg-white/50 px-4 py-3 text-xs text-gray-700 focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-white/10 dark:text-white"
               >
-                <option value="">Country</option>
-                <option value="United States">United States</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="United Kingdom">United Kingdom</option>
+                <option value="" className="dark:bg-gray-800 dark:text-white">Country</option>
+                <option value="United States" className="dark:bg-gray-800 dark:text-white">United States</option>
+                <option value="Pakistan" className="dark:bg-gray-800 dark:text-white">Pakistan</option>
+                <option value="United Kingdom" className="dark:bg-gray-800 dark:text-white">United Kingdom</option>
               </select>
               <input
                 type="tel"
@@ -121,7 +127,7 @@ export default function ContactSection() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                className="rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-300"
+                className="rounded-lg border border-gray-300 bg-white/50 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-white/10 dark:text-white dark:placeholder-gray-300 sm:focus:border-sky-500"
               />
               <textarea
                 rows={6}
@@ -130,7 +136,7 @@ export default function ContactSection() {
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Your Message"
-                className="resize-none rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-300 sm:col-span-2"
+                className="resize-none rounded-lg border border-gray-300 bg-white/50 px-4 py-3 text-xs text-gray-900 placeholder-gray-500 transition focus:border-primary focus:outline-none dark:border-gray-500 dark:bg-white/10 dark:text-white dark:placeholder-gray-300 sm:col-span-2"
               />
               <button
                 type="submit"
