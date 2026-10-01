@@ -43,7 +43,7 @@ const metrics = [
         description="Empowering organizations with secure cloud infrastructure, AI-driven innovation, cybersecurity, and custom software development. Empowering organizations with secure cloud infrastructure."
       />
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-12 sm:px-10 lg:grid-cols-[1.15fr_1fr] lg:px-12">
+      <section className="mx-auto grid max-w-7xl gap-10 px-6 pt-20 pb-20 sm:px-10 lg:grid-cols-[1.15fr_1fr] lg:px-12">
         <Reveal>
           <div>
             <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
@@ -72,7 +72,7 @@ const metrics = [
             </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-10 lg:px-12">
+      <section className="mx-auto max-w-7xl px-6 pt-10 pb-20 sm:px-10 lg:px-12">
         <Reveal>
           <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
             Our <span className="text-primary-dark">Mission</span>
@@ -86,7 +86,7 @@ const metrics = [
         </Reveal>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 sm:px-10 lg:px-12">
+      <section className="mx-auto max-w-7xl px-6 pt-10 pb-20 sm:px-10 lg:px-12">
         <Reveal>
           <div className="text-center">
             <h2 className="font-gaming text-3xl text-gray-900 dark:text-white sm:text-5xl">
@@ -131,7 +131,7 @@ const metrics = [
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 pb-20 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:px-12">
+      <section className="mx-auto grid max-w-7xl gap-8 px-6 pt-10 pb-20 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:px-12">
         <Reveal>
           <div>
             <h2 className="max-w-lg font-gaming text-3xl leading-tight text-gray-900 dark:text-white sm:text-5xl">
@@ -166,7 +166,7 @@ const metrics = [
         heading={<>Ready to Join the <span className="text-primary-dark">mission?</span></>}
         description="Empowering organizations with secure cloud infrastructure, AI-driven innovation, cybersecurity, and custom software development."
         buttonLabel="Get Consultation"
-        buttonHref="/#contact"
+        buttonHref="/contact"
       />
 
       <FaqList items={FAQ_ITEMS} />

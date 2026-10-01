@@ -16,10 +16,10 @@ export default function Games() {
 
       <CallToAction
         imagePath="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=85"
-        heading={<>Ready to build the next <span className="text-primary">world?</span></>}
+        heading={<>Ready to build the next <span className="text-primary-dark">world?</span></>}
         description="Let&apos;s create a game experience players will remember."
         buttonLabel="Get Consultation"
-        buttonHref="/#contact"
+        buttonHref="/contact"
       />
     </div>
   );

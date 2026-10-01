@@ -182,8 +182,8 @@ const STATS = [
 
 function Stats() {
   return (
-    <section className="relative mt-16 z-20 px-4 sm:px-6 lg:px-8 md:-mt-16">
-      <div className="mx-auto max-w-7xl">
+    <section className=" relative mt-20 z-20 px-4 sm:px-6 lg:px-8 md:-mt-10 "  >
+      <div className="mx-auto max-w-7xl bg-dark">
         <div className="stats-card rounded-3xl bg-white p-8 shadow-xl dark:bg-black md:p-12">
           <div className="grid items-start gap-8 lg:grid-cols-5">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8 dark:lg:border-gray-700">
@@ -242,13 +242,16 @@ function FeaturedGames() {
               <p className="whitespace-nowrap text-xs font-semibold uppercase tracking-widest text-gray-700 dark:text-gray-300">Our Games</p>
               <div className="h-px flex-1 bg-gray-300 dark:bg-gray-700" />
             </div>
+          </div>
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+            <h2 className="font-gaming text-4xl font-black leading-none text-gray-900 dark:text-white sm:text-5xl">
+              <span className="text-primary-dark">Featured</span>{' '}<span>Games</span>
+            </h2>
             <a href="/games" className="btn-primary inline-flex w-full shrink-0 items-center justify-center rounded-lg px-5 py-3 text-xs font-semibold text-white sm:w-auto">
               View Games
             </a>
           </div>
-          <h2 className="mb-10 font-gaming text-4xl font-black leading-none text-gray-900 dark:text-white sm:text-5xl">
-            <span className="text-primary-dark">Featured</span>{' '}<span>Games</span>
-          </h2>
+
         </Reveal>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURED_GAMES.map((game, index) => (
@@ -446,7 +449,7 @@ function Careers() {
   return (
     <section id="careers" className="bg-white py-20 dark:bg-black md:py-24">
         <Reveal>
-          <div className="relative overflow-hidden rounded-2xl bg-cover bg-center px-6 py-10 md:px-10 lg:px-12" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .62)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=80')" }}>
+          <div className="relative overflow-hidden bg-cover bg-center px-6 py-10 md:px-10 lg:px-12" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .62)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=80')" }}>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative grid items-center gap-10 lg:grid-cols-[1fr_360px]">
               <div className="max-w-xl">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white">Join Our Team</p>
@@ -460,7 +463,7 @@ function Careers() {
                 </p>
                 <a href="/careers" className="btn-primary mt-7 inline-flex rounded-lg px-5 py-3 text-xs font-semibold text-white">View Open Position</a>
               </div>
-              <div className="rounded-xl border border-primary bg-black/70 p-4 backdrop-blur-sm">
+              <div className="rounded-xl border border-primary bg-black/30 p-4 backdrop-blur-sm">
                 <h3 className="mb-4 flex items-center gap-3 text-sm font-semibold text-white">
                   <i className="fas fa-gamepad text-lg text-white" />Current Openings
                 </h3>
@@ -478,17 +481,22 @@ function Careers() {
         </Reveal>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="mt-8 rounded-xl border border-primary bg-white p-5 dark:bg-gray-950 md:p-6">
-            <form onSubmit={handleSubscribe} className="flex flex-col items-center gap-5 lg:flex-row">
+          <div className="mt-8 rounded-xl border border-primary p-5 bg-black md:p-6">
+            <form onSubmit={handleSubscribe} className="flex flex-col items-center gap-5 md:flex-row">
               <div className="flex min-w-0 flex-1 items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary"><i className="fas fa-envelope text-xl text-white" /></div>
-                <div>
-                  <h4 className="text-sm text-gray-800 dark:text-gray-200">Get studio updates, jobs alert and more.</h4>
-                  {subscribed && <p className="mt-1 text-xs text-primary">Thanks! You&apos;re subscribed.</p>}
-                </div>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  ">
+                    <i className="fas fa-envelope text-4xl text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm text-gray-200">Get studio updates, jobs alert and more.</h4>
+                    {subscribed && <p className="mt-1 text-xs text-primary">Thanks! You&apos;re subscribed.</p>}
+                  </div>
               </div>
-              <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Your email address" className="w-full rounded-lg border border-gray-700 bg-gray-100 dark:bg-gray-900 dark:text-white px-4 py-3 text-xs text-dark placeholder-gray-500 focus:border-primary focus:outline-none sm:max-w-xs" />
-              <button type="submit" className="btn-primary w-full rounded-lg px-6 py-3 text-xs font-semibold text-white sm:w-auto">Subscribe</button>
+              <div className='flex gap-3 '>
+
+                <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Your email address" className="w-full rounded-lg border bg-white/10 text-white border-gray-500 px-4 py-3 text-xs placeholder-gray-500 focus:border-primary focus:outline-none sm:max-w-xs" />
+                <button type="submit" className="btn-primary w-full rounded-lg px-6 py-3 text-xs font-semibold text-white sm:w-auto">Subscribe</button>
+              </div>
             </form>
           </div>
         </Reveal>

@@ -88,7 +88,7 @@ export default function Games() {
         heading={<>Ready to build the next <span className="text-primary-dark">world?</span></>}
         description="Let&apos;s create a game experience players will remember."
         buttonLabel="Get Consultation"
-        buttonHref="/#contact"
+        buttonHref="/contact"
       />
     </div>
   );
